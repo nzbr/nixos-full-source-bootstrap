@@ -1,0 +1,35 @@
+{
+  "name": "src",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^4.3.13",
+    "@beoe/rehype-d2": "^0.5.4",
+    "@daiji256/rehype-mathml": "^1.2.2",
+    "@fontsource/roboto-slab": "^5.2.8",
+    "@microflash/rehype-starry-night": "^7.4.0",
+    "@nzbr/copperflame": "github:nzbr/copperflame",
+    "@nzbr/copperflame-font": "^0.0.1",
+    "@nzbr/copperflame-web": "^0.0.2",
+    "@types/hast": "^3.0.4",
+    "@wooorm/starry-night": "^3.8.0",
+    "astro": "^5.16.9",
+    "astro-relative-links": "^0.4.2",
+    "rehype": "^13.0.2",
+    "rehype-citation": "^2.3.1",
+    "remark-math": "^6.0.0",
+    "reveal.js": "^5.2.1"
+  },
+  "devDependencies": {
+    "@citation/csl-style-ieee": "^1.0.0",
+    "@types/reveal.js": "^5.2.2",
+    "sass-embedded": "^1.97.2"
+  },
+  "packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
+}

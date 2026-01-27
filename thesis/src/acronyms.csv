@@ -1,0 +1,32 @@
+attrset, attribute set
+ca-derivation, content-addressed derivation
+CPU, central processing unit
+DHCP, the Dynamic Host Configuration Protocol
+dpkg, the Debian Package Manager
+DSL, domain-specific language
+FHS, the Filesystem Hierarchy Standard
+FOD, fixed-output derivation
+FOSS, free and open-source software
+GCC, the GNU Compiler Collection
+GiB, Gibibyte(s)
+GRUB, the Grand Unified Bootloader
+HTTP, the Hypertext Transfer Protocol
+I/O, input/output
+initramfs, initial RAM file system
+IP, Internet Protocol
+JSON, JavaScript Object Notation
+KVM, Kernel-based Virtual Machine
+MBR, master boot record
+NAR, Nix Archive
+NIC, network interface controller
+OS, operating system
+QCOW, QEMU Copy-On-Write
+PR, pull request
+RAM, random access memory
+RPM, the RPM Package Manager
+SHA-256, the Secure Hash Algorithm (256 bit)
+SSH, secure shell
+tcc, the Tiny C Compiler
+UEFI, the Unified Extensible Firmware Interface
+URL, uniform resource locator
+VM, virtual machine

@@ -1,0 +1,8 @@
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/stage0-posix-amd64.tar.gz f375ba962b893ac6c61145e6b542afff61d130dfedcaa4aa5129a346fa251784 stage0-posix-amd64.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/stage0-posix-aarch64.tar.gz bf43bf0a92e6dff8f37b9a56591fbcf43c0e1b711f2499f0e82acf2e4781fc1d stage0-posix-aarch64.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/stage0-posix-x86.tar.gz 99f656852205ecc38971f5a1033b6923754606a496c05329e08396005825ce95 stage0-posix-x86.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/m2libc.tar.gz f6d9557f09547fb32b7b08dc34d568bd65af19806c73f0f012e9f238484d4cbe m2libc.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/m2planet.tar.gz 1210624abac4e7fa8afffee4f7c4a40d1f96c252ced5b946a5cbbda1ddada53c m2planet.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/m2mesoplanet.tar.gz 2ccfcaf37c25db36661f4b430005a671c8a404fe22291283de9fa8dde71ffad0 m2mesoplanet.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/mescc-tools.tar.gz be7e3f71e6f00a2d3e66d25e4712f041dcfa653cb1a05c47909bdfe522e1f158 mescc-tools.tar.gz
+https://s3.eu-central-2.wasabisys.com/nixos-bootstrap-distfiles/mescc-tools-extra.tar.gz b67a62efbbf97eeabdb25c6e1174fb806cf4d1b361baf0ff787c8869c7a35a49 mescc-tools-extra.tar.gz

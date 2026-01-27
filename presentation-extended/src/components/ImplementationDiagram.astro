@@ -1,0 +1,69 @@
+---
+import DiagramCode from '../assets/implementation-diagram.d2?raw';
+import { rehypeD2Config } from '../../astro.config.mjs';
+import { rehype } from 'rehype';
+import rehypeD2 from '@beoe/rehype-d2';
+
+const renderedDiagram = await rehype()
+  .use(rehypeD2, rehypeD2Config)
+  .process(`<pre><code class="language-d2">${DiagramCode}</code></pre>`);
+---
+
+<div id="implementation-diagram" class="figure-box invisible">
+  <Fragment set:html={renderedDiagram} />
+</div>
+
+<script>
+  import Reveal from 'reveal.js';
+
+  const diagram = document.getElementById('implementation-diagram');
+  if (!diagram) {
+    throw new Error('Implementation diagram not found');
+  }
+
+  const steps: { [key: string]: string } = {
+    outer: 'impl-outer',
+    inner: 'impl-inner',
+    combined: 'impl-combined',
+  };
+
+  let processDiagramContent = () => {
+    let visible = false;
+    for (const step of Object.keys(steps).reverse()) {
+      if (!visible) {
+        let el = document.getElementById(steps[step]);
+
+        while (el && el.tagName.toLowerCase() !== 'section') {
+          el = el.parentElement;
+        }
+        visible = !!(el && el.classList.contains('present'));
+      }
+
+      Array.from(diagram.getElementsByClassName(`step-${step}`)).forEach(
+        (element) => {
+          if (visible) {
+            element.classList.remove('invisible');
+          } else {
+            element.classList.add('invisible');
+          }
+        }
+      );
+    }
+  };
+
+  // Or 'slidechanged'
+  Reveal.on('slidechanged', (event) => {
+    // console.log(event);
+    // @ts-ignore
+    const slide: HTMLElement = event.currentSlide;
+    if (slide.classList.contains('show-implementation-diagram')) {
+      diagram.classList.remove('invisible');
+      processDiagramContent();
+    } else {
+      diagram.classList.add('invisible');
+    }
+  });
+
+  // Reveal.on('fragmentshown', console.log);
+  // Reveal.on('fragmenthidden', console.log);
+</script>

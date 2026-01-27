@@ -1,0 +1,36 @@
+---
+import { rehype } from 'rehype';
+import { Cite, rehypeCitationGenerator } from 'rehype-citation';
+
+const inputHtml = await Astro.slots.render('default');
+
+export interface Props {
+  customStyle?: string;
+  opts?: ReturnType<typeof rehypeCitationGenerator> extends (
+    ...args: infer Args
+  ) => any
+    ? Args extends [(infer Opts)?]
+      ? Opts
+      : never
+    : never;
+}
+
+let opts = Astro.props.opts;
+
+if (Astro.props.customStyle) {
+  if (Astro.props.opts?.csl) {
+    throw new Error('Cannot set both customStyle and opts.csl!');
+  }
+  if (!opts) {
+    opts = {};
+  }
+  opts.csl = 'custom';
+  const citeConfig = Cite.plugins.config.get('@csl');
+  citeConfig.templates.add('custom', Astro.props.customStyle);
+}
+const rehypeCitation = rehypeCitationGenerator(Cite);
+
+const outputHtml = rehype().use(rehypeCitation, opts).process(inputHtml);
+---
+
+<Fragment set:html={outputHtml} />

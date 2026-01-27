@@ -1,0 +1,7 @@
+./thesis.*
+
+generated/
+result
+result/
+
+refs/

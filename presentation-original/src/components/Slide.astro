@@ -1,0 +1,91 @@
+---
+import type { Root, Element, ElementContent, Parent } from 'hast';
+import { rehype } from 'rehype';
+
+export interface Props {
+  title: string;
+  titleRaw?: boolean;
+  id?: string;
+  classNames?: string[];
+}
+const { title, titleRaw, id, classNames } = Astro.props;
+
+const processor = () => (tree: Root) => {
+  const notes: Element = {
+    type: 'element',
+    tagName: 'aside',
+    properties: {
+      className: ['notes'],
+    },
+    children: structuredClone(tree.children[0].children[1].children),
+  };
+
+  const visitSlide = (node: any) => {
+    if (node.children) {
+      node.children = node.children.filter(
+        (child: any) => !child.properties?.className?.includes('notes')
+      );
+
+      node.children.filter((child: any) => child.children).forEach(visitSlide);
+    }
+  };
+
+  visitSlide(tree);
+
+  const visitNotes = (node: any) => {
+    if (node.properties?.className?.includes('notes')) {
+      node.properties.style = 'color: navy;';
+    }
+
+    if (node.properties?.className?.includes('fragment')) {
+      if (node.children) {
+        node.children.unshift({
+          type: 'element',
+          tagName: 'span',
+          properties: {
+            style: 'color: red;',
+          },
+          children: [
+            {
+              type: 'text',
+              value: 'Ⓕ ',
+            },
+          ],
+        });
+      }
+    }
+
+    if (node.value) {
+      node.value = node.value.replace(/\[@[^\]]+\]/g, '');
+    }
+    if (node.children) {
+      node.children.forEach(visitNotes);
+    }
+  };
+
+  visitNotes(notes);
+
+  tree.children.push(notes);
+};
+
+// const content = Astro.slots.render('default');
+const content = Astro.slots
+  .render('default')
+  .then((html) => rehype().use(processor).process(html));
+---
+
+<section id={id} class={classNames?.join(' ')}>
+  {titleRaw ? <h1 set:html={title} /> : <h1>{title}</h1>}
+  <div class="section-content">
+    <div class="main-content">
+      {content}
+    </div>
+    {
+      Astro.slots.has('sidebar') && (
+        <div class="sidebar">
+          <slot name="sidebar" />
+        </div>
+      )
+    }
+  </div>
+</section>

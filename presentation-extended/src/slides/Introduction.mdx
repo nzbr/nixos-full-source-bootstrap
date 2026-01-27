@@ -1,0 +1,157 @@
+
+import Chapter from '../components/Chapter.astro';
+import Slide from '../components/Slide.astro';
+
+<Chapter>
+
+  <Slide title="Introduction">
+    - Using computers requires trusting software
+    - FOSS considered more trustworthy than proprietary software
+      - Source code can be audited
+  </Slide>
+
+  <Slide title="Trusting Compilers">
+    <ul>
+      <li>Compilers must be trusted<ul><li>"Reflections on Trusting Trust" by Ken Thompson [@thompson]</li></ul></li>
+      <li class="fragment" data-fragment-index="1">Often built using themselves (self-hosting)</li>
+      <li class="fragment" data-fragment-index="2">Can inject malware<ul class="fragment" data-fragment-index="3"><li>Patch itself during compilation</li></ul></li><li class="fragment" data-fragment-index="3">Bootstrapping<ul class="notes"><li>_full-source bootstrap_</li></ul></li>
+    </ul>
+
+    <Fragment slot="sidebar">
+      <div style={{ padding: "2em" }}>
+        <div class="fragment custom replace" data-fragment-index="1">
+        ```d2
+        classes.binary.style: {
+          border-radius: 8
+        }
+        direction: down
+        Start: "" {
+          shape: circle
+          width: 20
+          height: 20
+          style: {
+            fill: black
+            stroke: black
+          }
+        }
+        "Compiler\nbinary".class: binary
+        "login\nsource code"
+        "Compiler\nsource code"
+        "login\nbinary".class: binary
+
+        Start -> "Compiler\nbinary"
+        "Compiler\nbinary" -> "login\nsource code"
+        "Compiler\nbinary" -> "Compiler\nsource code"
+        "login\nsource code" -> "login\nbinary"
+        "Compiler\nsource code" -> "Compiler\nbinary"
+        ```
+        </div>
+
+        <div class="fragment custom replace" data-fragment-index="2">
+        ```d2
+        classes.binary.style: {
+          border-radius: 8
+        }
+        direction: down
+        Start: "" {
+          shape: circle
+          width: 20
+          height: 20
+          style: {
+            fill: black
+            stroke: black
+          }
+        }
+        "Clean Compiler\nbinary".class: binary
+        "Malicious Compiler\nsource code"
+        "Malicious Compiler\nbinary".class: binary
+        "Clean login\nsource code"
+        "Clean Compiler\nsource code"
+        "Backdoored login\nbinary".class: binary
+
+        Start -> "Malicious Compiler\nbinary"
+        "Clean Compiler\nbinary" -> "Malicious Compiler\nsource code"
+        "Malicious Compiler\nsource code" -> "Malicious Compiler\nbinary"
+        "Malicious Compiler\nbinary" -> "Clean login\nsource code"
+        "Malicious Compiler\nbinary" -> "Clean Compiler\nsource code"
+        "Clean login\nsource code" -> "Backdoored login\nbinary"
+        "Clean Compiler\nsource code" -> "Clean Compiler\nbinary"
+        ```
+        </div>
+
+        <div class="fragment custom replace" data-fragment-index="3">
+        ```d2
+        classes.binary.style: {
+          border-radius: 8
+        }
+        direction: down
+        Start: "" {
+          shape: circle
+          width: 20
+          height: 20
+          style: {
+            fill: black
+            stroke: black
+          }
+        }
+        "Clean Compiler\nbinary".class: binary
+        "Malicious Compiler\nsource code"
+        "Malicious Compiler\nbinary".class: binary
+        "Clean login\nsource code"
+        "Clean Compiler\nsource code"
+        "Backdoored login\nbinary".class: binary
+
+        Start -> "Malicious Compiler\nbinary"
+        "Clean Compiler\nbinary" -> "Malicious Compiler\nsource code"
+        "Malicious Compiler\nsource code" -> "Malicious Compiler\nbinary"
+        "Malicious Compiler\nbinary" -> "Clean login\nsource code"
+        "Malicious Compiler\nbinary" -> "Clean Compiler\nsource code"
+        "Clean login\nsource code" -> "Backdoored login\nbinary"
+        "Clean Compiler\nsource code" -> "Malicious Compiler\nbinary"
+        ```
+        </div>
+      </div>
+    </Fragment>
+  </Slide>
+
+  <Slide title="Nix">
+    - Package manager
+      - Hybrid approach
+      <ul class="notes">
+        <li>Source based with cache [@nix-manual]</li>
+      </ul>
+    - Functional [@dolstra]
+      <ul class="notes">
+        <li>Build output is a pure function of inputs</li>
+        <li>Inputs: Sources, dependencies and build script</li>
+        <li>Ideally: Build not influenced by environment</li>
+      </ul>
+    - Nix Language
+      <ul class="notes">
+        <li>Functional programming language</li>
+        <li>Used to define packages</li>
+      </ul>
+    - **NixOS**: Linux distribution based on Nix [@hemel]
+    - Package set (Nixpkgs) rooted in `bootstrapTools` package [@nixpkgs]
+      <ul>
+        <li class="notes"> = Minimal set of tools and compilers</li>
+        <li>No cyclic dependencies</li>
+        <li>Already small trust-base</li>
+        <li>Suitable bootstrapping target</li>
+        <li class="notes">Reduce trust-base by bootstrapping `bootstrapTools`</li>
+      </ul>
+  </Slide>
+
+  <Slide title="Research Questions">
+    <ol class="rq-list" style="max-width: calc(100% - 2em); padding: 1em;">
+      <li class="fragment custom stepped start-visible" data-fragment-index="0"><span>Is it possible to construct a full-source bootstrap chain for the Nix package manager?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="0"><span>Is it possible to construct a full-source bootstrap chain for Nixpkgs by replacing the `bootstrapTools` package?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="1"><span>How can these two bootstrap chains be combined to create a full-source bootstrap for NixOS?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="2"><span>Can the bootstrap chain be executed full offline?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="3"><span>Is it possible to create a NixOS ISO image that can be used to install the bootstrapped NixOS on other computers without having to run the full bootstrap on them first?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="4"><span>How can the bootstrap be adapted to architecures beyond x86-based systems?</span></li>
+      <li class="fragment custom stepped" data-fragment-index="5"><span>Does the bootstrap chain still include any binaries besides the initial bootstrap seeds?</span></li>
+    </ol>
+  </Slide>
+
+</Chapter>

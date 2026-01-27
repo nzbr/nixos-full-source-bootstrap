@@ -1,0 +1,76 @@
+import Chapter from '../components/Chapter.astro';
+import Slide from '../components/Slide.astro';
+
+<Chapter title="Background">
+
+  <Slide title="Nix Store">
+    - All packages kept in Nix Store [@dolstra]
+      - `/nix/store/<hash>-<name>`
+        - `<hash>` calculated from inputs
+          <ul class="notes">
+            <li>Inputs: sources, dependencies, build instructions</li>
+          </ul>
+        - Globally unique
+        <ul class="notes">
+          <li>Multiple versions of packages allowed</li>
+          <li>Can be executed from there directly</li>
+        </ul>
+        - Change to inputs $\to$ change to store path $\to$ rebuild
+    - Substitution
+      - Download pre-built path from **substituter**
+        - Binary cache $\approx$ package repository
+        - Other Nix store
+      <ul class="notes">
+        <li>Build locally otherwise</li>
+      </ul>
+
+    <div style={{ fontSize: '0.8em', position: 'absolute', bottom: '1em', left: 0, width: '100vw' }}>Example Store Path:<br/>`/nix/store/aqbddpi6p0bjfdlgswjry90nnppn3sgjsqsy-bash-interactive-5.2p37/bin/bash`</div>
+  </Slide>
+
+  <Slide title="Nixpkgs">
+    - Collection of Nix packages [@nixpkgs]
+    - Only FOSS enabled by default
+    - `stdenv`
+      - Set of packages available for all nixpkgs builds
+    - Built-in cross-compilation support
+  </Slide>
+
+  <Slide title="GNU Guix">
+    - Another functional package manager [@guix]
+      <ul class="notes">
+        <li>Based on Nix</li>
+      </ul>
+    - Guile Scheme
+      <ul class="notes">
+        <li>Instead of Nix language</li>
+        <li>Lisp dialect</li>
+      </ul>
+    - Guix System
+      - First full-source bootstrapped Linux distribution [@guix-bootstrap]
+        <ul>
+          <li class="notes">Coined the term</li>
+          <li>Bootstrapped from binary seed<ul><li>Small enough to be human-auditable</li></ul></li>
+        </ul>
+  </Slide>
+
+  <Slide title="minimal-bootstrap">
+    - Effort to implement Guix-like bootstrap for Nixpkgs
+    - Abandoned since 2023
+      - Still part of Nixpkgs [@nixpkgs]
+      <ul class="notes">
+        <li>No longer built during test</li>
+      </ul>
+  </Slide>
+
+  <Slide title="Aux Foundation">
+    - **Aux**: Alternative to the Nixpkgs ecosystem [@aux-foundation]
+    - **Aux Foundation**: Basis of the Aux package set
+      - Bootstrapped from binary seed
+  </Slide>
+
+  <Slide title="live-bootstrap">
+    - Bootstraps minimal Linux OS [@live-bootstrap]
+      - From binary seed
+      - Bootable seed: No existing OS required
+  </Slide>
+</Chapter>

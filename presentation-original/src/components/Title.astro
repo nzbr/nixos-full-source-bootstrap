@@ -1,0 +1,27 @@
+---
+export interface Props {
+    title: string;
+    subtitle?: string;
+}
+const { title, subtitle } = Astro.props;
+---
+
+<style>
+    .title-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+    }
+    .subtitle {
+        color: var(--cf-foreground);
+    }
+</style>
+<section class="title-slide">
+    <div class="title-content">
+        <h2 class="title">{title}</h2>
+        {subtitle ? <h3 class="subtitle">{subtitle}</h3> : null}
+    </div>
+</section>

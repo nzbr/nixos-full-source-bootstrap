@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployments.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p public/presentation
+          cp thesis/thesis.pdf public/
+          cp -r presentation-original/dist/. public/presentation/original
+          cp -r presentation-extended/dist/. public/presentation/extended
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

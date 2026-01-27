@@ -1,0 +1,98 @@
+import Chapter from '../components/Chapter.astro';
+import Slide from '../components/Slide.astro';
+import ImplementationDiagram from '../components/ImplementationDiagram.astro';
+
+<Chapter title="Implementation" id="implementation">
+
+  <Slide id='impl-design' classNames={["show-implementation-diagram"]} title="Design">
+    - Two independent parts
+      - **Outer Bootstrap**
+        - Bootstraps Nix
+      - **Inner Bootstrap**
+        - Assumes working Nix installation
+        - Bootstraps NixOS
+  </Slide>
+
+  <Slide id='impl-outer' classNames={["show-implementation-diagram"]} title="The Outer Bootstrap">
+    - Start with live-bootstrap
+      <ul class="notes">
+        <li>Yields minimal Linux OS</li>
+      </ul>
+    - Implemented **extensions**
+      - List of additional bootstrap steps
+      <ul class="notes">
+        <li>Applied to existing live-bootstrap installation or integrated into bootstrap chain</li>
+      </ul>
+    - Nix Extension
+      - Builds dependencies and Nix
+      <ul class="notes">
+        <li>Performs setup necessary to build packages</li>
+      </ul>
+  </Slide>
+
+  <Slide id='impl-inner' classNames={["show-implementation-diagram"]} title="The Inner Bootstrap">
+    - Build Aux Foundation
+      <ul class="notes">
+        <li>Using existing Nix installation</li>
+      </ul>
+    - Create initial stdenv
+      - Linked against musl libc
+      <ul class="notes">
+        <li>But: bootstrapTools is built against glibc</li>
+      </ul>
+    - Cross-compile gcc for glibc
+      <ul class="notes">
+        <li>Create new stdenv</li>
+        <li>(Re-)build bootstrapTools contents against glibc</li>
+      </ul>
+    - Build bootstrapTools (`i686-linux`)
+      - No longer supported, NixOS does not build
+    - Cross-compile bootstrapTools for `x86_64-linux`
+      <ul class="notes">
+        <li>from `i686-linux` Nixpkgs</li>
+      </ul>
+  </Slide>
+
+  <Slide id='impl-combined' classNames={["show-implementation-diagram"]} title="The Combined Bootstrap">
+    - Start with outer bootstrap
+    - Wrap inner bootstrap into NixOS extension
+    - live-bootstrap is 32-bit
+      <ul class="notes">
+        <li>$\Rightarrow$ cannot execute 64-bit binaries</li>
+        <li>32-bit NixOS unsupported</li>
+      </ul>
+      - Cross-compile 64-bit Linux and Nix
+    - Build generic NixOS configuration and boot it
+      <ul class="notes">
+        <li>Bootable on every system supported by live-bootstrap</li>
+      </ul>
+      - Generate hardware-specific config (`nixos-generate-config`)
+        <ul class="notes">
+          <li>Detect drives</li>
+          <li>Needed kernel modules</li>
+          <li>Install bootloader</li>
+        </ul>
+    - Rebuild system and reboot
+  </Slide>
+
+  <Slide title="Running Offline">
+    - live-bootstrap (and Nix extension) already work offline
+      <ul class="notes">
+        <li>Small tweak for systems without NIC</li>
+      </ul>
+    - NixOS extension required more work
+      - Sources not known before evaluation
+        <ul class="notes">
+          <li>Defined in Nix code</li>
+        </ul>
+      - Extract URL and hash with Nix
+      - Where not possible:
+        <ul>
+          <li class="notes">Archives, Git repositories, files with post-processing</li>
+          <li>Downloaded with existing Nix<ul><li>Still allows for auditing the downloaded code</li></ul></li>
+        </ul>
+  </Slide>
+
+</Chapter>
+
+<ImplementationDiagram />

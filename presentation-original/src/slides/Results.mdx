@@ -1,0 +1,95 @@
+import Chapter from '../components/Chapter.astro';
+import Slide from '../components/Slide.astro';
+
+<Chapter title="Results">
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ1 <div class='rq-text'>Is it possible to construct a full-source bootstrap chain for the Nix package manager?</div>">
+    Yes\
+    (outer bootstrap)
+
+    Source + Binary Seed $\Rightarrow$ 32-bit x86 Linux OS with Nix
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ2 <div class='rq-text'>Is it possible to construct a full-source bootstrap chain for Nixpkgs by replacing the `bootstrapTools` package?</div>">
+    Yes\
+    (inner bootstrap)
+
+    `i686-linux` Nix + Source + Binary Seed $\Rightarrow$ `bootstrapTools`
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ3 <div class='rq-text'>How can these two bootstrap chains be combined to create a full-source bootstrap for NixOS?</div>">
+    Yes\
+    (combined bootstrap)
+
+    - Only 64-bit x86
+      - Needed to extend NixOS bootstrap
+    - Tested in VM and on physical hardware
+      - ~17h in VM
+
+    <Fragment slot="sidebar">
+      ## Hardware specifications
+
+      **VM**
+      - Host
+        - AMD Ryzen 7 5800X
+        - 32GiB RAM
+        - Linux / Fedora 42
+      - Guest
+        - 12 logical CPU cores
+        - 16GiB RAM
+        - QEMU `9.2.4`
+
+      <br />
+      <br />
+      <br />
+
+      **Physical hardware**
+      - Lenovo Thinkpad T440p
+        - Intel Core i7-4702MQ
+        - 16GiB RAM
+    </Fragment>
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ4 <div class='rq-text'>Can the bootstrap chain be executed full offline?</div>">
+    Yes
+
+    - No NIC attached to VM
+    - Physical hardware required internet
+      - Hardware detection installed additional packages
+    - Not executable online
+      - Source code availability problems
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ5 <div class='rq-text'>Is it possible to create a NixOS ISO image that can be used to install the bootstrapped NixOS on other computers without having to run the full bootstrap on them first?</div>">
+    - ISO can be built
+    - Installing from ISO is possible
+      - Still needs to build large portion of the bootstrap
+        - Build dependencies not included in ISO
+      - Source availability problems
+        - Sources must be copied to live system
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ6 <div class='rq-text'>How can the bootstrap be adapted to architecures beyond x86-based systems?</div>">
+    - No native compilation
+      - live-bootstrap and Aux Foundation only support 32-bit x86
+      - Missing bootstrapTools
+        <ul class="notes">
+          <li>Might be possible to cross-compile on x86<ul><li>like for `x86_64`</li></ul></li>
+        </ul>
+    - Cross-compilation
+      - Entire system
+      - ISO
+        - Bootable on Raspberry Pi 4 (with UEFI)
+  </Slide>
+
+  <Slide classNames={["rq-slide"]} titleRaw title="RQ7 <div class='rq-text'>Does the bootstrap chain still include any binaries besides the initial bootstrap seeds?</div>">
+    Yes
+
+    - e.g. `rustc` (Rust compiler)
+      - Dependency of NixOS
+      - Built from pre-compiled `rustc` binary
+    - Some Bootstraps exist, but not implemented in Nixpkgs
+      - Rust,[@rust-bootstrap] Java[@java-bootstrap]
+  </Slide>
+
+</Chapter>

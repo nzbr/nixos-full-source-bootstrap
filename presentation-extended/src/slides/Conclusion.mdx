@@ -1,0 +1,48 @@
+import Chapter from "../components/Chapter.astro";
+import Slide from "../components/Slide.astro";
+
+<Chapter title="Discussion / Conclusion">
+
+  <Slide title="Remaining Impurities">
+    - Preparation OS
+    - Hardware / Firmware
+    - Malicious source code
+      - Example: `xz-utils` backdoor [@xz-utils-cve]
+  </Slide>
+
+  <Slide title="Usability">
+    - Initial Installation
+      - High computational cost
+      - Limited hardware support
+        <ul>
+          <li>Only `x86_64`</li>
+          <li>No UEFI</li>
+          <li class="notes">Workaround: Installer ISO</li>
+        </ul>
+    - Adding Packages
+      <ul>
+        <li>Similar to other source-based package managers</li>
+        <li class="notes">Unless build dependencies are deleted</li>
+      </ul>
+    - Updating
+      - Manual Nixpkgs update
+      - Rebuilds
+  </Slide>
+
+  <Slide title="Reproducible Builds">
+    - Rebuild produces bitwise identical output
+    - Solution to computational cost
+      - Verify binaries through consensus [@reproducible-builds]
+    - Content-Addressed Derivations [@ca-nix-rfc;@ca-nix-tweag]
+      - Early cutoff
+      - Avoid rebuilds
+  </Slide>
+
+  <Slide title="Future Work">
+    - Integration into Nixpkgs (`minimal-bootstrap`)
+    - Optimization
+    - Replace remaining bootstrap binaries
+      - Implement existing bootstrap chains
+  </Slide>
+
+</Chapter>

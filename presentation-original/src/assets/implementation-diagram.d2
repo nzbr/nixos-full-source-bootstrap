@@ -1,0 +1,95 @@
+**: {
+  &label: start
+  label: ""
+  shape: circle
+  height: 24
+  width: 24
+  style.fill: black
+}
+
+**: {
+  &label: end
+  label: ⬤
+  shape: circle
+  height: 24
+  width: 24
+  style.fill: transparent
+}
+
+classes: {
+  package.style: {
+    border-radius: 6
+    fill: "#eef1f9"
+  }
+  extension.style: {
+    border-radius: 8
+    fill: "#dee1eb"
+  }
+  virtual.style: {
+    stroke-dash: 10
+    fill: transparent
+  }
+  external.style: {
+    border-radius: 999
+    fill: "#eef1f9"
+  }
+}
+
+direction: right
+
+combined: Full-Source Bootstrap {
+  style: {
+    fill: "#ffffff"
+    stroke: "#9599ac"
+  }
+
+  outer: Outer Bootstrap {
+    class: virtual
+
+    ext-nix: Nix Extension {
+      class: [extension; step-outer]
+
+      Dependencies: dependencies {class: [package; step-outer]}
+      Nix: Nix {class: [package; step-outer]}
+
+      Dependencies -> Nix: {class: [step-outer]}
+    }
+
+    live-bootstrap: live-bootstrap {class: [external; step-outer]}
+
+    live-bootstrap -> ext-nix: {class: [step-outer]}
+  }
+
+  ext-nixos: NixOS Extension {
+    class: [extension; step-combined]
+
+    inner: Inner Bootstrap {
+      class: virtual
+
+      aux: Aux Foundation {class: [external; step-inner]}
+
+      init-stdenv: stdenv\ninitial {class: [package; step-inner]}
+      gcc-glibc: gcc\nglibc {class: [package; step-inner]}
+      stdenv: stdenv\nfinal {class: [package; step-inner]}
+      bootstrapTools: bootstrapTools\ni686-linux {class: [package; step-inner]}
+      bootstrapTools64: bootstrapTools\nx86_64-linux {class: [package; step-inner]}
+
+      aux -> init-stdenv -> gcc-glibc -> stdenv -> bootstrapTools -> bootstrapTools64: {class: step-inner}
+    }
+
+    linux64: Linux\n64-bit {class: [package; step-combined]}
+    nix64: Nix\n64-bit {class: [package; step-combined]}
+    toplevel: NixOS toplevel\ngeneric config {class: [package; step-combined]}
+
+    inner.bootstrapTools64 -> linux64 -> nix64 -> toplevel: {class: step-combined}
+  }
+
+  nixos: NixOS toplevel\nw/ hardware config {class: [package; step-combined]}
+
+  globalstart: start {class: step-combined}
+  globalend: end {class: step-combined}
+
+  globalstart -> outer.live-bootstrap: {class: step-combined}
+  outer.ext-nix -> ext-nixos: {class: step-combined}
+  ext-nixos -> nixos -> globalend: {class: step-combined}
+}

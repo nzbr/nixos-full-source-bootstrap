@@ -1,0 +1,718 @@
+<!DOCTYPE html><html lang="en_US" data-astro-cid-vwhxnzm6> <head><meta charset="utf-8"><meta name="generator" content="Astro v5.16.9"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"><title>Reveal.js</title><link rel="stylesheet" href="/nixos-full-source-bootstrap/presentation/extended/_astro/index.pyENuNFL.css"></head> <body data-astro-cid-vwhxnzm6> <div class="reveal" data-astro-cid-vwhxnzm6> <div class="slides" data-astro-cid-vwhxnzm6>  <html><head></head><body><section class="title-slide" data-astro-cid-zfufvvig=""> <div class="title-content" data-astro-cid-zfufvvig=""> <h2 class="title" data-astro-cid-zfufvvig="">A Full-Source Bootstrap for NixOS</h2> <h3 class="subtitle" data-astro-cid-zfufvvig="">Wire Jansen</h3>  <aside class="notes"> <ul> <li>Not 100% the version I held at University</li> <li>Stripped university theme</li> <li>Re-Added slides I had to cut due to time constraints</li> <li>
+Slides were always in english, but I held the presentation in german
+</li> </ul> </aside>  </div> </section> <section>  <section> <h1>Introduction</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Using computers requires trusting software</li>
+<li>FOSS considered more trustworthy than proprietary software
+<ul>
+<li>Source code can be audited</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Using computers requires trusting software</li>
+<li>FOSS considered more trustworthy than proprietary software
+<ul>
+<li>Source code can be audited</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Trusting Compilers</h1> <div class="section-content"> <div class="main-content"> <ul><li>Compilers must be trusted<ul><li>”Reflections on Trusting Trust” by Ken Thompson <span class="citation" id="citation--thompson--1">[<a href="#bib-thompson" title="[1]K. Thompson, “Reflections on trusting trust,” Communications of the ACM, vol. 27, no. 8, pp. 761–763, Aug. 1984, doi: 10.1145/358198.358210.">1</a>]</span></li></ul></li><li class="fragment" data-fragment-index="1">Often built using themselves (self-hosting)</li><li class="fragment" data-fragment-index="2">Can inject malware<ul class="fragment" data-fragment-index="3"><li>Patch itself during compilation</li></ul></li><li class="fragment" data-fragment-index="3">Bootstrapping</li></ul><aside class="notes" style="color: navy;"><ul><li>Compilers must be trusted<ul><li>”Reflections on Trusting Trust” by Ken Thompson </li></ul></li><li class="fragment" data-fragment-index="1"><span style="color: red;">Ⓕ </span>Often built using themselves (self-hosting)</li><li class="fragment" data-fragment-index="2"><span style="color: red;">Ⓕ </span>Can inject malware<ul class="fragment" data-fragment-index="3"><span style="color: red;">Ⓕ </span><li>Patch itself during compilation</li></ul></li><li class="fragment" data-fragment-index="3"><span style="color: red;">Ⓕ </span>Bootstrapping<ul class="notes" style="color: navy;"><li><em>full-source bootstrap</em></li></ul></li></ul></aside> </div> <div class="sidebar"> <div style="padding:2em"><div class="fragment custom replace" data-fragment-index="1"><figure class="beoe d2"><svg xmlns="http://www.w3.org/2000/svg" data-d2-version="v0.7.0-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 280 538"><svg class="d2-1425632700 d2-svg" viewBox="11 11 280 538"><rect width="280" height="538" x="11" y="11" stroke-width="0" rx="0" style="fill:#1e1e2e"></rect><style>.d2-1425632700 .text-bold{font-family:"d2-1425632700-font-bold"}@font-face{font-family:d2-1425632700-font-bold;src:url(data:application/font-woff;base64,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)}.connection,.shape{stroke-linejoin:round}.shape{shape-rendering:geometricPrecision}.connection{stroke-linecap:round}.d2-1425632700 .fill-N1{fill:#cdd6f4}.d2-1425632700 .fill-B6{fill:#313244}.d2-1425632700 .stroke-B1{stroke:#cba6f7}</style><g class="U3RhcnQ="><g class="shape"><circle cx="211" cy="22" r="10" stroke="#000" class="shape" style="stroke-width:2"></circle></g></g><g class="JiMzNDtDb21waWxlclxuYmluYXJ5JiMzNDs= binary"><g class="shape"><rect width="111" height="82" x="156" y="102" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="211.5" y="140.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="211.5" dy="0">Compiler</tspan><tspan x="211.5" dy="18.5">binary</tspan></text></g><g class="JiMzNDtsb2dpblxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M12 314h129v82H12z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="76.5" y="352.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="76.5" dy="0">login</tspan><tspan x="76.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtDb21waWxlclxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M161 314h129v82H161z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="225.5" y="352.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="225.5" dy="0">Compiler</tspan><tspan x="225.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtsb2dpblxuYmluYXJ5JiMzNDs= binary"><g class="shape"><rect width="91" height="82" x="31" y="466" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="76.5" y="504.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="76.5" dy="0">login</tspan><tspan x="76.5" dy="18.5">binary</tspan></text></g><g class="KFN0YXJ0IC0mZ3Q7ICYjMzQ7Q29tcGlsZXJcbmJpbmFyeSYjMzQ7KVswXQ=="><marker id="mk-d2-1425632700-3488378134" markerHeight="12" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto" refX="7" refY="6" viewBox="0 0 10 12"><path stroke-width="2" d="m0 0 10 6-10 6z" class="connection" style="fill:#cba6f7"></path></marker><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-1425632700-3488378134)" d="M212 34v64" class="connection stroke-B1" mask="url(#d2-1425632700)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q29tcGlsZXJcbmJpbmFyeSYjMzQ7IC0mZ3Q7ICYjMzQ7bG9naW5cbnNvdXJjZSBjb2RlJiMzNDspWzBd"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-1425632700-3488378134)" d="M183.875 186v28s0 10-10 10H86.5s-10 0-10 10v76" class="connection stroke-B1" mask="url(#d2-1425632700)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q29tcGlsZXJcbmJpbmFyeSYjMzQ7IC0mZ3Q7ICYjMzQ7Q29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDspWzBd"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-1425632700-3488378134)" d="M204 186v124" class="connection stroke-B1" mask="url(#d2-1425632700)" style="stroke-width:2"></path></g><g class="KCYjMzQ7bG9naW5cbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtsb2dpblxuYmluYXJ5JiMzNDspWzBd"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-1425632700-3488378134)" d="M76.5 398v64" class="connection stroke-B1" mask="url(#d2-1425632700)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtDb21waWxlclxuYmluYXJ5JiMzNDspWzBd"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-1425632700-3488378134)" d="M239.375 312V188" class="connection stroke-B1" mask="url(#d2-1425632700)" style="stroke-width:2"></path></g><mask id="d2-1425632700" width="280" height="538" x="11" y="11" maskUnits="userSpaceOnUse"><path fill="#fff" d="M11 11h280v538H11z"></path></mask></svg></svg></figure></div><div class="fragment custom replace" data-fragment-index="2"><figure class="beoe d2"><svg xmlns="http://www.w3.org/2000/svg" data-d2-version="v0.7.0-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 358 722"><svg class="d2-2503062504 d2-svg" viewBox="11 11 358 722"><rect width="358" height="722" x="11" y="11" stroke-width="0" rx="0" style="fill:#1e1e2e"></rect><style>.d2-2503062504 .text-bold{font-family:"d2-2503062504-font-bold"}@font-face{font-family:d2-2503062504-font-bold;src:url(data:application/font-woff;base64,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)}.connection,.shape{stroke-linejoin:round}.shape{shape-rendering:geometricPrecision}.connection{stroke-linecap:round}.d2-2503062504 .fill-N1{fill:#cdd6f4}.d2-2503062504 .fill-B6{fill:#313244}.d2-2503062504 .stroke-B1{stroke:#cba6f7}</style><g class="U3RhcnQ="><g class="shape"><circle cx="65" cy="246" r="10" stroke="#000" class="shape" style="stroke-width:2"></circle></g></g><g class="JiMzNDtDbGVhbiBDb21waWxlclxuYmluYXJ5JiMzNDs= binary"><g class="shape"><rect width="154" height="82" x="174" y="12" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="251" y="50.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="251" dy="0">Clean Compiler</tspan><tspan x="251" dy="18.5">binary</tspan></text></g><g class="JiMzNDtNYWxpY2lvdXMgQ29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDs="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M95 174h181v82H95z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="185.5" y="212.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="185.5" dy="0">Malicious Compiler</tspan><tspan x="185.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtNYWxpY2lvdXMgQ29tcGlsZXJcbmJpbmFyeSYjMzQ7 binary"><g class="shape"><rect width="180" height="82" x="36" y="336" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="126" y="374.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="126" dy="0">Malicious Compiler</tspan><tspan x="126" dy="18.5">binary</tspan></text></g><g class="JiMzNDtDbGVhbiBsb2dpblxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M31 498h129v82H31z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="95.5" y="536.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="95.5" dy="0">Clean login</tspan><tspan x="95.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtDbGVhbiBDb21waWxlclxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M214 498h154v82H214z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="291" y="536.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="291" dy="0">Clean Compiler</tspan><tspan x="291" dy="18.5">source code</tspan></text></g><g class="JiMzNDtCYWNrZG9vcmVkIGxvZ2luXG5iaW5hcnkmIzM0Ow== binary"><g class="shape"><rect width="168" height="82" x="12" y="650" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="96" y="688.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="96" dy="0">Backdoored login</tspan><tspan x="96" dy="18.5">binary</tspan></text></g><g class="KFN0YXJ0IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OylbMF0="><marker id="mk-d2-2503062504-3488378134" markerHeight="12" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto" refX="7" refY="6" viewBox="0 0 10 12"><path stroke-width="2" d="m0 0 10 6-10 6z" class="connection" style="fill:#cba6f7"></path></marker><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="m65.994 258-.231 74" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gQ29tcGlsZXJcbmJpbmFyeSYjMzQ7IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M186.25 96v74" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OylbMF0="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M156 258v74" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OyAtJmd0OyAmIzM0O0NsZWFuIGxvZ2luXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M96 420v74" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OyAtJmd0OyAmIzM0O0NsZWFuIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M156 420v28s0 10 10 10h89.416s10 0 10 10v26" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gbG9naW5cbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtCYWNrZG9vcmVkIGxvZ2luXG5iaW5hcnkmIzM0OylbMF0="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M96 582v64" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gQ29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtDbGVhbiBDb21waWxlclxuYmluYXJ5JiMzNDspWzBd"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2503062504-3488378134)" d="M316.75 496V98" class="connection stroke-B1" mask="url(#d2-2503062504)" style="stroke-width:2"></path></g><mask id="d2-2503062504" width="358" height="722" x="11" y="11" maskUnits="userSpaceOnUse"><path fill="#fff" d="M11 11h358v722H11z"></path></mask></svg></svg></figure></div><div class="fragment custom replace" data-fragment-index="3"><figure class="beoe d2"><svg xmlns="http://www.w3.org/2000/svg" data-d2-version="v0.7.0-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 333 712"><svg class="d2-4221354998 d2-svg" viewBox="11 11 333 712"><rect width="333" height="712" x="11" y="11" stroke-width="0" rx="0" style="fill:#1e1e2e"></rect><style>.d2-4221354998 .text-bold{font-family:"d2-4221354998-font-bold"}@font-face{font-family:d2-4221354998-font-bold;src:url(data:application/font-woff;base64,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)}.connection,.shape{stroke-linejoin:round}.shape{shape-rendering:geometricPrecision}.connection{stroke-linecap:round}.d2-4221354998 .fill-N1{fill:#cdd6f4}.d2-4221354998 .fill-B6{fill:#313244}.d2-4221354998 .stroke-B1{stroke:#cba6f7}</style><g class="U3RhcnQ="><g class="shape"><circle cx="132" cy="236" r="10" stroke="#000" class="shape" style="stroke-width:2"></circle></g></g><g class="JiMzNDtDbGVhbiBDb21waWxlclxuYmluYXJ5JiMzNDs= binary"><g class="shape"><rect width="154" height="82" x="175" y="12" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="252" y="50.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="252" dy="0">Clean Compiler</tspan><tspan x="252" dy="18.5">binary</tspan></text></g><g class="JiMzNDtNYWxpY2lvdXMgQ29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDs="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M162 164h181v82H162z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="252.5" y="202.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="252.5" dy="0">Malicious Compiler</tspan><tspan x="252.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtNYWxpY2lvdXMgQ29tcGlsZXJcbmJpbmFyeSYjMzQ7 binary"><g class="shape"><rect width="180" height="82" x="132" y="326" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="222" y="364.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="222" dy="0">Malicious Compiler</tspan><tspan x="222" dy="18.5">binary</tspan></text></g><g class="JiMzNDtDbGVhbiBsb2dpblxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M31 488h129v82H31z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="95.5" y="526.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="95.5" dy="0">Clean login</tspan><tspan x="95.5" dy="18.5">source code</tspan></text></g><g class="JiMzNDtDbGVhbiBDb21waWxlclxuc291cmNlIGNvZGUmIzM0Ow=="><g class="shape"><path fill="#313244" stroke="#CBA6f7" d="M180 488h154v82H180z" class="stroke-B1 fill-B6" style="stroke-width:2"></path></g><text x="257" y="526.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="257" dy="0">Clean Compiler</tspan><tspan x="257" dy="18.5">source code</tspan></text></g><g class="JiMzNDtCYWNrZG9vcmVkIGxvZ2luXG5iaW5hcnkmIzM0Ow== binary"><g class="shape"><rect width="168" height="82" x="12" y="640" fill="#313244" stroke="#CBA6f7" class="stroke-B1 fill-B6" rx="8" style="stroke-width:2"></rect></g><text x="96" y="678.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="96" dy="0">Backdoored login</tspan><tspan x="96" dy="18.5">binary</tspan></text></g><g class="KFN0YXJ0IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OylbMF0="><marker id="mk-d2-4221354998-3488378134" markerHeight="12" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto" refX="7" refY="6" viewBox="0 0 10 12"><path stroke-width="2" d="m0 0 10 6-10 6z" class="connection" style="fill:#cba6f7"></path></marker><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="m132.02 248 .292 28s.104 10 10.104 10h40.5s10 0 10 10v26" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gQ29tcGlsZXJcbmJpbmFyeSYjMzQ7IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M252.916 96v64" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7IC0mZ3Q7ICYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OylbMF0="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M252.916 248v74" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OyAtJmd0OyAmIzM0O0NsZWFuIGxvZ2luXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M177.916 410v28s0 10-10 10H106s-10 0-10 10v26" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7TWFsaWNpb3VzIENvbXBpbGVyXG5iaW5hcnkmIzM0OyAtJmd0OyAmIzM0O0NsZWFuIENvbXBpbGVyXG5zb3VyY2UgY29kZSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M231.833 410v74" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gbG9naW5cbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtCYWNrZG9vcmVkIGxvZ2luXG5iaW5hcnkmIzM0OylbMF0="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M96 572v64" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><g class="KCYjMzQ7Q2xlYW4gQ29tcGlsZXJcbnNvdXJjZSBjb2RlJiMzNDsgLSZndDsgJiMzNDtNYWxpY2lvdXMgQ29tcGlsZXJcbmJpbmFyeSYjMzQ7KVswXQ=="><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-4221354998-3488378134)" d="M267.916 486v-74" class="connection stroke-B1" mask="url(#d2-4221354998)" style="stroke-width:2"></path></g><mask id="d2-4221354998" width="333" height="712" x="11" y="11" maskUnits="userSpaceOnUse"><path fill="#fff" d="M11 11h333v712H11z"></path></mask></svg></svg></figure></div></div> </div> </div> </section><section> <h1>Nix</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Package manager
+<ul>
+<li>Hybrid approach</li>
+</ul>
+
+</li>
+<li>Functional <span class="citation" id="citation--dolstra--2">[<a href="#bib-dolstra" title="[1]E. Dolstra, “The purely functional software deployment model,” Utrecht University, Netherlands, 2006. [Online]. Available: http://dspace.library.uu.nl/handle/1874/7540">2</a>]</span>
+
+</li>
+<li>Nix Language
+
+</li>
+<li><strong>NixOS</strong>: Linux distribution based on Nix <span class="citation" id="citation--hemel--3">[<a href="#bib-hemel" title="[1]A. Hemel, “NixOS: the Nix based operating system,” Zenodo, 2006. doi: 10.5281/zenodo.12906987.">3</a>]</span></li>
+<li>Package set (Nixpkgs) rooted in <code>bootstrapTools</code> package <span class="citation" id="citation--nixpkgs--4">[<a href="#bib-nixpkgs" title="[1]“Nixpkgs: Nix Packages collection &#x26;#38; NixOS.” GitHub. Accessed: Jul. 21, 2025. [Online]. Available: https://github.com/NixOS/nixpkgs/tree/92c2e04a475523e723c67ef872d8037379073681">4</a>]</span>
+<ul><li>No cyclic dependencies</li><li>Already small trust-base</li><li>Suitable bootstrapping target</li></ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Package manager
+<ul>
+<li>Hybrid approach</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>Source based with cache </li></ul>
+</li>
+<li>Functional 
+<ul class="notes" style="color: navy;"><li>Build output is a pure function of inputs</li><li>Inputs: Sources, dependencies and build script</li><li>Ideally: Build not influenced by environment</li></ul>
+</li>
+<li>Nix Language
+<ul class="notes" style="color: navy;"><li>Functional programming language</li><li>Used to define packages</li></ul>
+</li>
+<li><strong>NixOS</strong>: Linux distribution based on Nix </li>
+<li>Package set (Nixpkgs) rooted in <code>bootstrapTools</code> package 
+<ul><li class="notes" style="color: navy;"> = Minimal set of tools and compilers</li><li>No cyclic dependencies</li><li>Already small trust-base</li><li>Suitable bootstrapping target</li><li class="notes" style="color: navy;">Reduce trust-base by bootstrapping <code>bootstrapTools</code></li></ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Research Questions</h1> <div class="section-content"> <div class="main-content"> <ol class="rq-list" style="max-width: calc(100% - 2em); padding: 1em;"><li class="fragment custom stepped start-visible" data-fragment-index="0"><span>Is it possible to construct a full-source bootstrap chain for the Nix package manager?</span></li><li class="fragment custom stepped" data-fragment-index="0"><span>Is it possible to construct a full-source bootstrap chain for Nixpkgs by replacing the <code>bootstrapTools</code> package?</span></li><li class="fragment custom stepped" data-fragment-index="1"><span>How can these two bootstrap chains be combined to create a full-source bootstrap for NixOS?</span></li><li class="fragment custom stepped" data-fragment-index="2"><span>Can the bootstrap chain be executed full offline?</span></li><li class="fragment custom stepped" data-fragment-index="3"><span>Is it possible to create a NixOS ISO image that can be used to install the bootstrapped NixOS on other computers without having to run the full bootstrap on them first?</span></li><li class="fragment custom stepped" data-fragment-index="4"><span>How can the bootstrap be adapted to architecures beyond x86-based systems?</span></li><li class="fragment custom stepped" data-fragment-index="5"><span>Does the bootstrap chain still include any binaries besides the initial bootstrap seeds?</span></li></ol><aside class="notes" style="color: navy;"><ol class="rq-list" style="max-width: calc(100% - 2em); padding: 1em;"><li class="fragment custom stepped start-visible" data-fragment-index="0"><span style="color: red;">Ⓕ </span><span>Is it possible to construct a full-source bootstrap chain for the Nix package manager?</span></li><li class="fragment custom stepped" data-fragment-index="0"><span style="color: red;">Ⓕ </span><span>Is it possible to construct a full-source bootstrap chain for Nixpkgs by replacing the <code>bootstrapTools</code> package?</span></li><li class="fragment custom stepped" data-fragment-index="1"><span style="color: red;">Ⓕ </span><span>How can these two bootstrap chains be combined to create a full-source bootstrap for NixOS?</span></li><li class="fragment custom stepped" data-fragment-index="2"><span style="color: red;">Ⓕ </span><span>Can the bootstrap chain be executed full offline?</span></li><li class="fragment custom stepped" data-fragment-index="3"><span style="color: red;">Ⓕ </span><span>Is it possible to create a NixOS ISO image that can be used to install the bootstrapped NixOS on other computers without having to run the full bootstrap on them first?</span></li><li class="fragment custom stepped" data-fragment-index="4"><span style="color: red;">Ⓕ </span><span>How can the bootstrap be adapted to architecures beyond x86-based systems?</span></li><li class="fragment custom stepped" data-fragment-index="5"><span style="color: red;">Ⓕ </span><span>Does the bootstrap chain still include any binaries besides the initial bootstrap seeds?</span></li></ol></aside> </div>  </div> </section> </section> <section> <section class="title-slide" data-astro-cid-zfufvvig=""> <div class="title-content" data-astro-cid-zfufvvig=""> <h2 class="title" data-astro-cid-zfufvvig="">Background</h2>   </div> </section> <section> <h1>Nix Store</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>All packages kept in Nix Store <span class="citation" id="citation--dolstra--5">[<a href="#bib-dolstra" title="[1]E. Dolstra, “The purely functional software deployment model,” Utrecht University, Netherlands, 2006. [Online]. Available: http://dspace.library.uu.nl/handle/1874/7540">2</a>]</span>
+<ul>
+<li><code>/nix/store/&#x3C;hash>-&#x3C;name></code>
+<ul>
+<li><code>&#x3C;hash></code> calculated from inputs
+
+</li>
+<li>Globally unique</li>
+</ul>
+
+<ul>
+<li>Change to inputs <math><mo lspace="0em" rspace="0em">→</mo></math> change to store path <math><mo lspace="0em" rspace="0em">→</mo></math> rebuild</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Substitution
+<ul>
+<li>Download pre-built path from <strong>substituter</strong>
+<ul>
+<li>Binary cache <math><mo lspace="0em" rspace="0em">≈</mo></math> package repository</li>
+<li>Other Nix store</li>
+</ul>
+</li>
+</ul>
+
+</li>
+</ul><div style="font-size:0.8em;position:absolute;bottom:1em;left:0;width:100vw">Example Store Path:<br><code>/nix/store/aqbddpi6p0bjfdlgswjry90nnppn3sgjsqsy-bash-interactive-5.2p37/bin/bash</code></div><aside class="notes" style="color: navy;"><ul>
+<li>All packages kept in Nix Store 
+<ul>
+<li><code>/nix/store/&#x3C;hash>-&#x3C;name></code>
+<ul>
+<li><code>&#x3C;hash></code> calculated from inputs
+<ul class="notes" style="color: navy;"><li>Inputs: sources, dependencies, build instructions</li></ul>
+</li>
+<li>Globally unique</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>Multiple versions of packages allowed</li><li>Can be executed from there directly</li></ul>
+<ul>
+<li>Change to inputs <math><mo lspace="0em" rspace="0em">→</mo></math> change to store path <math><mo lspace="0em" rspace="0em">→</mo></math> rebuild</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Substitution
+<ul>
+<li>Download pre-built path from <strong>substituter</strong>
+<ul>
+<li>Binary cache <math><mo lspace="0em" rspace="0em">≈</mo></math> package repository</li>
+<li>Other Nix store</li>
+</ul>
+</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>Build locally otherwise</li></ul>
+</li>
+</ul><div style="font-size:0.8em;position:absolute;bottom:1em;left:0;width:100vw">Example Store Path:<br><code>/nix/store/aqbddpi6p0bjfdlgswjry90nnppn3sgjsqsy-bash-interactive-5.2p37/bin/bash</code></div></aside> </div>  </div> </section><section> <h1>Nixpkgs</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Collection of Nix packages <span class="citation" id="citation--nixpkgs--6">[<a href="#bib-nixpkgs" title="[1]“Nixpkgs: Nix Packages collection &#x26;#38; NixOS.” GitHub. Accessed: Jul. 21, 2025. [Online]. Available: https://github.com/NixOS/nixpkgs/tree/92c2e04a475523e723c67ef872d8037379073681">4</a>]</span></li>
+<li>Only FOSS enabled by default</li>
+<li><code>stdenv</code>
+<ul>
+<li>Set of packages available for all nixpkgs builds</li>
+</ul>
+</li>
+<li>Built-in cross-compilation support</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Collection of Nix packages </li>
+<li>Only FOSS enabled by default</li>
+<li><code>stdenv</code>
+<ul>
+<li>Set of packages available for all nixpkgs builds</li>
+</ul>
+</li>
+<li>Built-in cross-compilation support</li>
+</ul></aside> </div>  </div> </section><section> <h1>GNU Guix</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Another functional package manager <span class="citation" id="citation--guix--7">[<a href="#bib-guix" title="[1]“Guix: Transactional package manager, declarative GNU/Linux distribution, reproducible deployment tool, and more!” Codeberg. Accessed: Sep. 25, 2025. [Online]. Available: https://codeberg.org/guix/guix">5</a>]</span>
+
+</li>
+<li>Guile Scheme
+
+</li>
+<li>Guix System
+<ul>
+<li>First full-source bootstrapped Linux distribution <span class="citation" id="citation--guix-bootstrap--8">[<a href="#bib-guix-bootstrap" title="[1]J. Nieuwenhuizen and L. Courtès, “The Full-Source Bootstrap: Building from source all the way down,” Apr. 26, 2023. Accessed: Sep. 25, 2025. [Online]. Available: https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/">6</a>]</span>
+<ul><li>Bootstrapped from binary seed<ul><li>Small enough to be human-auditable</li></ul></li></ul>
+</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Another functional package manager 
+<ul class="notes" style="color: navy;"><li>Based on Nix</li></ul>
+</li>
+<li>Guile Scheme
+<ul class="notes" style="color: navy;"><li>Instead of Nix language</li><li>Lisp dialect</li></ul>
+</li>
+<li>Guix System
+<ul>
+<li>First full-source bootstrapped Linux distribution 
+<ul><li class="notes" style="color: navy;">Coined the term</li><li>Bootstrapped from binary seed<ul><li>Small enough to be human-auditable</li></ul></li></ul>
+</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>minimal-bootstrap</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Effort to implement Guix-like bootstrap for Nixpkgs</li>
+<li>Abandoned since 2023
+<ul>
+<li>Still part of Nixpkgs <span class="citation" id="citation--nixpkgs--9">[<a href="#bib-nixpkgs" title="[1]“Nixpkgs: Nix Packages collection &#x26;#38; NixOS.” GitHub. Accessed: Jul. 21, 2025. [Online]. Available: https://github.com/NixOS/nixpkgs/tree/92c2e04a475523e723c67ef872d8037379073681">4</a>]</span></li>
+</ul>
+
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Effort to implement Guix-like bootstrap for Nixpkgs</li>
+<li>Abandoned since 2023
+<ul>
+<li>Still part of Nixpkgs </li>
+</ul>
+<ul class="notes" style="color: navy;"><li>No longer built during test</li></ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Aux Foundation</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li><strong>Aux</strong>: Alternative to the Nixpkgs ecosystem <span class="citation" id="citation--aux-foundation--10">[<a href="#bib-aux-foundation" title="[1]J. Hamilton and others, “Aux Foundation: A full binary bootstrap chain for Nix.” Mar. 30, 2025. Accessed: Sep. 25, 2025. [Online]. Available: https://git.auxolotl.org/auxolotl/foundation">7</a>]</span></li>
+<li><strong>Aux Foundation</strong>: Basis of the Aux package set
+<ul>
+<li>Bootstrapped from binary seed</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li><strong>Aux</strong>: Alternative to the Nixpkgs ecosystem </li>
+<li><strong>Aux Foundation</strong>: Basis of the Aux package set
+<ul>
+<li>Bootstrapped from binary seed</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>live-bootstrap</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Bootstraps minimal Linux OS <span class="citation" id="citation--live-bootstrap--11">[<a href="#bib-live-bootstrap" title="[1]S. Tyler and others, “live-bootstrap.” GitHub. Accessed: Sep. 25, 2025. [Online]. Available: https://github.com/fosslinux/live-bootstrap">8</a>]</span>
+<ul>
+<li>From binary seed</li>
+<li>Bootable seed: No existing OS required</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Bootstraps minimal Linux OS 
+<ul>
+<li>From binary seed</li>
+<li>Bootable seed: No existing OS required</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section> </section> <script type="module" src="/nixos-full-source-bootstrap/presentation/extended/_astro/ImplementationDiagram.astro_astro_type_script_index_0_lang.5dva63qx.js"></script><section id="implementation"> <section class="title-slide" data-astro-cid-zfufvvig=""> <div class="title-content" data-astro-cid-zfufvvig=""> <h2 class="title" data-astro-cid-zfufvvig="">Implementation</h2>   </div> </section> <section id="impl-design" class="show-implementation-diagram"> <h1>Design</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Two independent parts
+<ul>
+<li><strong>Outer Bootstrap</strong>
+<ul>
+<li>Bootstraps Nix</li>
+</ul>
+</li>
+<li><strong>Inner Bootstrap</strong>
+<ul>
+<li>Assumes working Nix installation</li>
+<li>Bootstraps NixOS</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Two independent parts
+<ul>
+<li><strong>Outer Bootstrap</strong>
+<ul>
+<li>Bootstraps Nix</li>
+</ul>
+</li>
+<li><strong>Inner Bootstrap</strong>
+<ul>
+<li>Assumes working Nix installation</li>
+<li>Bootstraps NixOS</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section id="impl-outer" class="show-implementation-diagram"> <h1>The Outer Bootstrap</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Start with live-bootstrap
+
+</li>
+<li>Implemented <strong>extensions</strong>
+<ul>
+<li>List of additional bootstrap steps</li>
+</ul>
+
+</li>
+<li>Nix Extension
+<ul>
+<li>Builds dependencies and Nix</li>
+</ul>
+
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Start with live-bootstrap
+<ul class="notes" style="color: navy;"><li>Yields minimal Linux OS</li></ul>
+</li>
+<li>Implemented <strong>extensions</strong>
+<ul>
+<li>List of additional bootstrap steps</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>Applied to existing live-bootstrap installation or integrated into bootstrap chain</li></ul>
+</li>
+<li>Nix Extension
+<ul>
+<li>Builds dependencies and Nix</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>Performs setup necessary to build packages</li></ul>
+</li>
+</ul></aside> </div>  </div> </section><section id="impl-inner" class="show-implementation-diagram"> <h1>The Inner Bootstrap</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Build Aux Foundation
+
+</li>
+<li>Create initial stdenv
+<ul>
+<li>Linked against musl libc</li>
+</ul>
+
+</li>
+<li>Cross-compile gcc for glibc
+
+</li>
+<li>Build bootstrapTools (<code>i686-linux</code>)
+<ul>
+<li>No longer supported, NixOS does not build</li>
+</ul>
+</li>
+<li>Cross-compile bootstrapTools for <code>x86_64-linux</code>
+
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Build Aux Foundation
+<ul class="notes" style="color: navy;"><li>Using existing Nix installation</li></ul>
+</li>
+<li>Create initial stdenv
+<ul>
+<li>Linked against musl libc</li>
+</ul>
+<ul class="notes" style="color: navy;"><li>But: bootstrapTools is built against glibc</li></ul>
+</li>
+<li>Cross-compile gcc for glibc
+<ul class="notes" style="color: navy;"><li>Create new stdenv</li><li>(Re-)build bootstrapTools contents against glibc</li></ul>
+</li>
+<li>Build bootstrapTools (<code>i686-linux</code>)
+<ul>
+<li>No longer supported, NixOS does not build</li>
+</ul>
+</li>
+<li>Cross-compile bootstrapTools for <code>x86_64-linux</code>
+<ul class="notes" style="color: navy;"><li>from <code>i686-linux</code> Nixpkgs</li></ul>
+</li>
+</ul></aside> </div>  </div> </section><section id="impl-combined" class="show-implementation-diagram"> <h1>The Combined Bootstrap</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Start with outer bootstrap</li>
+<li>Wrap inner bootstrap into NixOS extension</li>
+<li>live-bootstrap is 32-bit
+
+<ul>
+<li>Cross-compile 64-bit Linux and Nix</li>
+</ul>
+</li>
+<li>Build generic NixOS configuration and boot it
+
+<ul>
+<li>Generate hardware-specific config (<code>nixos-generate-config</code>)
+
+</li>
+</ul>
+</li>
+<li>Rebuild system and reboot</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Start with outer bootstrap</li>
+<li>Wrap inner bootstrap into NixOS extension</li>
+<li>live-bootstrap is 32-bit
+<ul class="notes" style="color: navy;"><li><math><mo stretchy="false" lspace="0em" rspace="0em">⇒</mo></math> cannot execute 64-bit binaries</li><li>32-bit NixOS unsupported</li></ul>
+<ul>
+<li>Cross-compile 64-bit Linux and Nix</li>
+</ul>
+</li>
+<li>Build generic NixOS configuration and boot it
+<ul class="notes" style="color: navy;"><li>Bootable on every system supported by live-bootstrap</li></ul>
+<ul>
+<li>Generate hardware-specific config (<code>nixos-generate-config</code>)
+<ul class="notes" style="color: navy;"><li>Detect drives</li><li>Needed kernel modules</li><li>Install bootloader</li></ul>
+</li>
+</ul>
+</li>
+<li>Rebuild system and reboot</li>
+</ul></aside> </div>  </div> </section><section> <h1>Running Offline</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>live-bootstrap (and Nix extension) already work offline
+
+</li>
+<li>NixOS extension required more work
+<ul>
+<li>Sources not known before evaluation
+
+</li>
+<li>Extract URL and hash with Nix</li>
+<li>Where not possible:
+<ul><li>Downloaded with existing Nix<ul><li>Still allows for auditing the downloaded code</li></ul></li></ul>
+</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>live-bootstrap (and Nix extension) already work offline
+<ul class="notes" style="color: navy;"><li>Small tweak for systems without NIC</li></ul>
+</li>
+<li>NixOS extension required more work
+<ul>
+<li>Sources not known before evaluation
+<ul class="notes" style="color: navy;"><li>Defined in Nix code</li></ul>
+</li>
+<li>Extract URL and hash with Nix</li>
+<li>Where not possible:
+<ul><li class="notes" style="color: navy;">Archives, Git repositories, files with post-processing</li><li>Downloaded with existing Nix<ul><li>Still allows for auditing the downloaded code</li></ul></li></ul>
+</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section> </section>
+<div id="implementation-diagram" class="figure-box invisible"> <figure class="beoe d2"><svg xmlns="http://www.w3.org/2000/svg" data-d2-version="v0.7.0-HEAD" preserveAspectRatio="xMinYMin meet" viewBox="0 0 3143 384"><svg class="d2-2784987366 d2-svg" viewBox="11 11 3143 384"><rect width="3143" height="384" x="11" y="11" stroke-width="0" rx="0" style="fill:#1e1e2e"></rect><style>.d2-2784987366 .text{font-family:"d2-2784987366-font-regular"}@font-face{font-family:d2-2784987366-font-regular;src:url(data:application/font-woff;base64,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)}.d2-2784987366 .text-bold{font-family:"d2-2784987366-font-bold"}@font-face{font-family:d2-2784987366-font-bold;src:url(data:application/font-woff;base64,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)}.connection,.shape{stroke-linejoin:round}.shape{shape-rendering:geometricPrecision}.connection{stroke-linecap:round}.d2-2784987366 .fill-N1{fill:#cdd6f4}.d2-2784987366 .stroke-B1,.d2-2784987366 .stroke-B2{stroke:#cba6f7}</style><g class="Y29tYmluZWQ="><path fill="#1b1b1b" stroke="#9599ac" d="M12 12h3141v382H12z" class="shape" style="stroke-width:2"></path><text x="1582.5" y="45" fill="#CDD6F4" class="text fill-N1" style="text-anchor:middle;font-size:28px">Full-Source Bootstrap</text></g><g class="Y29tYmluZWQub3V0ZXI= virtual"><g class="shape"><path fill="transparent" stroke="#CBA6f7" d="M161 70h697v266H161z" class="stroke-B2" style="stroke-width:2;stroke-dasharray:20,19.731279"></path></g><text x="509.5" y="99" fill="#CDD6F4" class="text fill-N1" style="text-anchor:middle;font-size:24px">Outer Bootstrap</text></g><g class="Y29tYmluZWQuZXh0LW5peG9z extension step-combined"><g class="shape"><rect width="1823" height="282" x="933" y="62" fill="#303030" stroke="#CBA6f7" class="stroke-B1" rx="8" style="stroke-width:2"></rect></g><text x="1844.5" y="91" fill="#CDD6F4" class="text fill-N1" style="text-anchor:middle;font-size:24px">NixOS Extension</text></g><g class="Y29tYmluZWQubml4b3M= package step-combined"><g class="shape"><rect width="183" height="82" x="2826" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="2917.5" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="2917.5" dy="0">NixOS toplevel</tspan><tspan x="2917.5" dy="18.5">w/ hardware config</tspan></text></g><g class="Y29tYmluZWQuZ2xvYmFsc3RhcnQ= step-combined"><g class="shape"><circle cx="74" cy="203" r="12" stroke="#CBA6f7" class="shape stroke-B1" style="stroke-width:2"></circle></g></g><g class="Y29tYmluZWQuZ2xvYmFsZW5k step-combined"><g class="shape"><circle cx="3091" cy="203" r="12" fill="transparent" stroke="#CBA6f7" class="shape stroke-B1" style="stroke-width:2"></circle></g><text x="3091" y="208.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">⬤</text></g><g class="Y29tYmluZWQub3V0ZXIuZXh0LW5peA== extension step-outer"><g class="shape"><rect width="381" height="166" x="427" y="120" fill="#303030" stroke="#CBA6f7" class="stroke-B1" rx="8" style="stroke-width:2"></rect></g><text x="617.5" y="145" fill="#CDD6F4" class="text fill-N1" style="text-anchor:middle;font-size:20px">Nix Extension</text></g><g class="Y29tYmluZWQub3V0ZXIubGl2ZS1ib290c3RyYXA= external step-outer"><g class="shape"><rect width="146" height="66" x="211" y="170" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="33" style="stroke-width:2"></rect></g><text x="284" y="208.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">live-bootstrap</text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVy virtual"><g class="shape"><path fill="transparent" stroke="#CBA6f7" d="M983 112h1184v182H983z" class="stroke-B2" style="stroke-width:2;stroke-dasharray:20,19.731279"></path></g><text x="1575" y="137" fill="#CDD6F4" class="text fill-N1" style="text-anchor:middle;font-size:20px">Inner Bootstrap</text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmxpbnV4NjQ= package step-combined"><g class="shape"><rect width="87" height="82" x="2242" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="2285.5" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="2285.5" dy="0">Linux</tspan><tspan x="2285.5" dy="18.5">64-bit</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLm5peDY0 package step-combined"><g class="shape"><rect width="87" height="82" x="2399" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="2442.5" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="2442.5" dy="0">Nix</tspan><tspan x="2442.5" dy="18.5">64-bit</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLnRvcGxldmVs package step-combined"><g class="shape"><rect width="150" height="82" x="2556" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="2631" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="2631" dy="0">NixOS toplevel</tspan><tspan x="2631" dy="18.5">generic config</tspan></text></g><g class="Y29tYmluZWQub3V0ZXIuZXh0LW5peC5EZXBlbmRlbmNpZXM= package step-outer"><g class="shape"><rect width="143" height="66" x="477" y="170" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="548.5" y="208.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">dependencies</text></g><g class="Y29tYmluZWQub3V0ZXIuZXh0LW5peC5OaXg= package step-outer"><g class="shape"><rect width="68" height="66" x="690" y="170" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="724" y="208.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">Nix</text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLmF1eA== external step-inner"><g class="shape"><rect width="158" height="66" x="1033" y="170" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="33" style="stroke-width:2"></rect></g><text x="1112" y="208.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px">Aux Foundation</text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLmluaXQtc3RkZW52 package step-inner"><g class="shape"><rect width="94" height="82" x="1261" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="1308" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="1308" dy="0">stdenv</tspan><tspan x="1308" dy="18.5">initial</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLmdjYy1nbGliYw== package step-inner"><g class="shape"><rect width="80" height="82" x="1425" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="1465" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="1465" dy="0">gcc</tspan><tspan x="1465" dy="18.5">glibc</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLnN0ZGVudg== package step-inner"><g class="shape"><rect width="94" height="82" x="1575" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="1622" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="1622" dy="0">stdenv</tspan><tspan x="1622" dy="18.5">final</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLmJvb3RzdHJhcFRvb2xz package step-inner"><g class="shape"><rect width="154" height="82" x="1739" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="1816" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="1816" dy="0">bootstrapTools</tspan><tspan x="1816" dy="18.5">i686-linux</tspan></text></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLmJvb3RzdHJhcFRvb2xzNjQ= package step-inner"><g class="shape"><rect width="154" height="82" x="1963" y="162" fill="#5e5e5e" stroke="#CBA6f7" class="stroke-B1" rx="6" style="stroke-width:2"></rect></g><text x="2040" y="200.5" fill="#CDD6F4" class="text-bold fill-N1" style="text-anchor:middle;font-size:16px"><tspan x="2040" dy="0">bootstrapTools</tspan><tspan x="2040" dy="18.5">x86_64-linux</tspan></text></g><g class="Y29tYmluZWQub3V0ZXIuZXh0LW5peC4oRGVwZW5kZW5jaWVzIC0mZ3Q7IE5peClbMF0= step-outer"><marker id="mk-d2-2784987366-3488378134" markerHeight="12" markerUnits="userSpaceOnUse" markerWidth="10" orient="auto" refX="7" refY="6" viewBox="0 0 10 12"><path stroke-width="2" d="m0 0 10 6-10 6z" class="connection" style="fill:#cba6f7"></path></marker><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M622 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQub3V0ZXIuKGxpdmUtYm9vdHN0cmFwIC0mZ3Q7IGV4dC1uaXgpWzBd step-outer"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M359 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLihhdXggLSZndDsgaW5pdC1zdGRlbnYpWzBd step-inner"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M1193 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLihpbml0LXN0ZGVudiAtJmd0OyBnY2MtZ2xpYmMpWzBd step-inner"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M1357 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLihnY2MtZ2xpYmMgLSZndDsgc3RkZW52KVswXQ== step-inner"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M1507 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLihzdGRlbnYgLSZndDsgYm9vdHN0cmFwVG9vbHMpWzBd step-inner"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M1671 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLmlubmVyLihib290c3RyYXBUb29scyAtJmd0OyBib290c3RyYXBUb29sczY0KVswXQ== step-inner"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M1895 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLihpbm5lci5ib290c3RyYXBUb29sczY0IC0mZ3Q7IGxpbnV4NjQpWzBd step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M2119 203h119" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLihsaW51eDY0IC0mZ3Q7IG5peDY0KVswXQ== step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M2331 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuZXh0LW5peG9zLihuaXg2NCAtJmd0OyB0b3BsZXZlbClbMF0= step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M2488 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuKGdsb2JhbHN0YXJ0IC0mZ3Q7IG91dGVyLmxpdmUtYm9vdHN0cmFwKVswXQ== step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M88 203h119" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuKG91dGVyLmV4dC1uaXggLSZndDsgZXh0LW5peG9zKVswXQ== step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M810 203h119" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuKGV4dC1uaXhvcyAtJmd0OyBuaXhvcylbMF0= step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M2758 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><g class="Y29tYmluZWQuKG5peG9zIC0mZ3Q7IGdsb2JhbGVuZClbMF0= step-combined"><path fill="none" stroke="#CBA6f7" marker-end="url(#mk-d2-2784987366-3488378134)" d="M3011 203h64" class="connection stroke-B1" mask="url(#d2-2784987366)" style="stroke-width:2"></path></g><mask id="d2-2784987366" width="3143" height="384" x="11" y="11" maskUnits="userSpaceOnUse"><path fill="#fff" d="M11 11h3143v384H11z"></path></mask></svg></svg></figure> </div>  <section> <section class="title-slide" data-astro-cid-zfufvvig=""> <div class="title-content" data-astro-cid-zfufvvig=""> <h2 class="title" data-astro-cid-zfufvvig="">Results</h2>   </div> </section> <section class="rq-slide"> <h1>RQ1 <div class="rq-text">Is it possible to construct a full-source bootstrap chain for the Nix package manager?</div></h1> <div class="section-content"> <div class="main-content"> <p>Yes<br>
+(outer bootstrap)</p><p>Source + Binary Seed <math><mo stretchy="false" lspace="0em" rspace="0em">⇒</mo></math> 32-bit x86 Linux OS with Nix</p><aside class="notes" style="color: navy;"><p>Yes<br>
+(outer bootstrap)</p><p>Source + Binary Seed <math><mo stretchy="false" lspace="0em" rspace="0em">⇒</mo></math> 32-bit x86 Linux OS with Nix</p></aside> </div>  </div> </section><section class="rq-slide"> <h1>RQ2 <div class="rq-text">Is it possible to construct a full-source bootstrap chain for Nixpkgs by replacing the `bootstrapTools` package?</div></h1> <div class="section-content"> <div class="main-content"> <p>Yes<br>
+(inner bootstrap)</p><p><code>i686-linux</code> Nix + Source + Binary Seed <math><mo stretchy="false" lspace="0em" rspace="0em">⇒</mo></math> <code>bootstrapTools</code></p><aside class="notes" style="color: navy;"><p>Yes<br>
+(inner bootstrap)</p><p><code>i686-linux</code> Nix + Source + Binary Seed <math><mo stretchy="false" lspace="0em" rspace="0em">⇒</mo></math> <code>bootstrapTools</code></p></aside> </div>  </div> </section><section class="rq-slide"> <h1>RQ3 <div class="rq-text">How can these two bootstrap chains be combined to create a full-source bootstrap for NixOS?</div></h1> <div class="section-content"> <div class="main-content"> <p>Yes<br>
+(combined bootstrap)</p><ul>
+<li>Only 64-bit x86
+<ul>
+<li>Needed to extend NixOS bootstrap</li>
+</ul>
+</li>
+<li>Tested in VM and on physical hardware
+<ul>
+<li>~17h in VM</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><p>Yes<br>
+(combined bootstrap)</p><ul>
+<li>Only 64-bit x86
+<ul>
+<li>Needed to extend NixOS bootstrap</li>
+</ul>
+</li>
+<li>Tested in VM and on physical hardware
+<ul>
+<li>~17h in VM</li>
+</ul>
+</li>
+</ul></aside> </div> <div class="sidebar"> <h2 id="hardware-specifications">Hardware specifications</h2><p><strong>VM</strong></p><ul>
+<li>Host
+<ul>
+<li>AMD Ryzen 7 5800X</li>
+<li>32GiB RAM</li>
+<li>Linux / Fedora 42</li>
+</ul>
+</li>
+<li>Guest
+<ul>
+<li>12 logical CPU cores</li>
+<li>16GiB RAM</li>
+<li>QEMU <code>9.2.4</code></li>
+</ul>
+</li>
+</ul><br><br><br><p><strong>Physical hardware</strong></p><ul>
+<li>Lenovo Thinkpad T440p
+<ul>
+<li>Intel Core i7-4702MQ</li>
+<li>16GiB RAM</li>
+</ul>
+</li>
+</ul> </div> </div> </section><section class="rq-slide"> <h1>RQ4 <div class="rq-text">Can the bootstrap chain be executed full offline?</div></h1> <div class="section-content"> <div class="main-content"> <p>Yes</p><ul>
+<li>No NIC attached to VM</li>
+<li>Physical hardware required internet
+<ul>
+<li>Hardware detection installed additional packages</li>
+</ul>
+</li>
+<li>Not executable online
+<ul>
+<li>Source code availability problems</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><p>Yes</p><ul>
+<li>No NIC attached to VM</li>
+<li>Physical hardware required internet
+<ul>
+<li>Hardware detection installed additional packages</li>
+</ul>
+</li>
+<li>Not executable online
+<ul>
+<li>Source code availability problems</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section class="rq-slide"> <h1>RQ5 <div class="rq-text">Is it possible to create a NixOS ISO image that can be used to install the bootstrapped NixOS on other computers without having to run the full bootstrap on them first?</div></h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>ISO can be built</li>
+<li>Installing from ISO is possible
+<ul>
+<li>Still needs to build large portion of the bootstrap
+<ul>
+<li>Build dependencies not included in ISO</li>
+</ul>
+</li>
+<li>Source availability problems
+<ul>
+<li>Sources must be copied to live system</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>ISO can be built</li>
+<li>Installing from ISO is possible
+<ul>
+<li>Still needs to build large portion of the bootstrap
+<ul>
+<li>Build dependencies not included in ISO</li>
+</ul>
+</li>
+<li>Source availability problems
+<ul>
+<li>Sources must be copied to live system</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section class="rq-slide"> <h1>RQ6 <div class="rq-text">How can the bootstrap be adapted to architecures beyond x86-based systems?</div></h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>No native compilation
+<ul>
+<li>live-bootstrap and Aux Foundation only support 32-bit x86</li>
+<li>Missing bootstrapTools
+
+</li>
+</ul>
+</li>
+<li>Cross-compilation
+<ul>
+<li>Entire system</li>
+<li>ISO
+<ul>
+<li>Bootable on Raspberry Pi 4 (with UEFI)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>No native compilation
+<ul>
+<li>live-bootstrap and Aux Foundation only support 32-bit x86</li>
+<li>Missing bootstrapTools
+<ul class="notes" style="color: navy;"><li>Might be possible to cross-compile on x86<ul><li>like for <code>x86_64</code></li></ul></li></ul>
+</li>
+</ul>
+</li>
+<li>Cross-compilation
+<ul>
+<li>Entire system</li>
+<li>ISO
+<ul>
+<li>Bootable on Raspberry Pi 4 (with UEFI)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section class="rq-slide"> <h1>RQ7 <div class="rq-text">Does the bootstrap chain still include any binaries besides the initial bootstrap seeds?</div></h1> <div class="section-content"> <div class="main-content"> <p>Yes</p><ul>
+<li>e.g. <code>rustc</code> (Rust compiler)
+<ul>
+<li>Dependency of NixOS</li>
+<li>Built from pre-compiled <code>rustc</code> binary</li>
+</ul>
+</li>
+<li>Some Bootstraps exist, but not implemented in Nixpkgs
+<ul>
+<li>Rust,<span class="citation" id="citation--rust-bootstrap--12">[<a href="#bib-rust-bootstrap" title="[1]D. Tolnay, “Bootstrapping rustc from source.” Accessed: Dec. 13, 2025. [Online]. Available: https://github.com/dtolnay/bootstrap">9</a>]</span> Java<span class="citation" id="citation--java-bootstrap--13">[<a href="#bib-java-bootstrap" title="[1]Bootstrappable Builds, “From C++ to Java.” Accessed: Dec. 13, 2025. [Online]. Available: https://www.bootstrappable.org/projects/java.html">10</a>]</span></li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><p>Yes</p><ul>
+<li>e.g. <code>rustc</code> (Rust compiler)
+<ul>
+<li>Dependency of NixOS</li>
+<li>Built from pre-compiled <code>rustc</code> binary</li>
+</ul>
+</li>
+<li>Some Bootstraps exist, but not implemented in Nixpkgs
+<ul>
+<li>Rust, Java</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section> </section> <section> <section class="title-slide" data-astro-cid-zfufvvig=""> <div class="title-content" data-astro-cid-zfufvvig=""> <h2 class="title" data-astro-cid-zfufvvig="">Discussion / Conclusion</h2>   </div> </section> <section> <h1>Remaining Impurities</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Preparation OS</li>
+<li>Hardware / Firmware</li>
+<li>Malicious source code
+<ul>
+<li>Example: <code>xz-utils</code> backdoor <span class="citation" id="citation--xz-utils-cve--14">[<a href="#bib-xz-utils-cve" title="[1]“CVE-2024-3094.” Mar. 29, 2024. Accessed: Oct. 20, 2025. [Online]. Available: https://www.cve.org/CVERecord?id=CVE-2024-3094">11</a>]</span></li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Preparation OS</li>
+<li>Hardware / Firmware</li>
+<li>Malicious source code
+<ul>
+<li>Example: <code>xz-utils</code> backdoor </li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Usability</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Initial Installation
+<ul>
+<li>High computational cost</li>
+<li>Limited hardware support
+<ul><li>Only <code>x86_64</code></li><li>No UEFI</li></ul>
+</li>
+</ul>
+</li>
+<li>Adding Packages
+<ul><li>Similar to other source-based package managers</li></ul>
+</li>
+<li>Updating
+<ul>
+<li>Manual Nixpkgs update</li>
+<li>Rebuilds</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Initial Installation
+<ul>
+<li>High computational cost</li>
+<li>Limited hardware support
+<ul><li>Only <code>x86_64</code></li><li>No UEFI</li><li class="notes" style="color: navy;">Workaround: Installer ISO</li></ul>
+</li>
+</ul>
+</li>
+<li>Adding Packages
+<ul><li>Similar to other source-based package managers</li><li class="notes" style="color: navy;">Unless build dependencies are deleted</li></ul>
+</li>
+<li>Updating
+<ul>
+<li>Manual Nixpkgs update</li>
+<li>Rebuilds</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Reproducible Builds</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Rebuild produces bitwise identical output</li>
+<li>Solution to computational cost
+<ul>
+<li>Verify binaries through consensus <span class="citation" id="citation--reproducible-builds--15">[<a href="#bib-reproducible-builds" title="[1]C. Lamb and S. Zacchiroli, “Reproducible Builds: Increasing the Integrity of Software Supply Chains,” IEEE Software, vol. 39, no. 2, pp. 62–70, Mar. 2022, doi: 10.1109/MS.2021.3073045.">12</a>]</span></li>
+</ul>
+</li>
+<li>Content-Addressed Derivations <span class="citation" id="citation--ca-nix-rfc--ca-nix-tweag--16">[<a href="#bib-ca-nix-rfc" title="[1]T. Hufschmitt, “RFC 0062: Content-addressed paths.” Accessed: Oct. 21, 2025. [Online]. Available: https://github.com/tweag/rfcs/blob/cas-rfc/rfcs/0062-content-addressed-paths.md">13</a>], [<a href="#bib-ca-nix-tweag" title="[1]T. Hufschmitt, “Implementing a content-addressed Nix.” Accessed: Oct. 21, 2025. [Online]. Available: https://www.tweag.io/blog/2021-12-02-nix-cas-4/">14</a>]</span>
+<ul>
+<li>Early cutoff</li>
+<li>Avoid rebuilds</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Rebuild produces bitwise identical output</li>
+<li>Solution to computational cost
+<ul>
+<li>Verify binaries through consensus </li>
+</ul>
+</li>
+<li>Content-Addressed Derivations 
+<ul>
+<li>Early cutoff</li>
+<li>Avoid rebuilds</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section><section> <h1>Future Work</h1> <div class="section-content"> <div class="main-content"> <ul>
+<li>Integration into Nixpkgs (<code>minimal-bootstrap</code>)</li>
+<li>Optimization</li>
+<li>Replace remaining bootstrap binaries
+<ul>
+<li>Implement existing bootstrap chains</li>
+</ul>
+</li>
+</ul><aside class="notes" style="color: navy;"><ul>
+<li>Integration into Nixpkgs (<code>minimal-bootstrap</code>)</li>
+<li>Optimization</li>
+<li>Replace remaining bootstrap binaries
+<ul>
+<li>Implement existing bootstrap chains</li>
+</ul>
+</li>
+</ul></aside> </div>  </div> </section> </section> <section> <h1>References</h1> <div class="section-content"> <div class="main-content"> <div id="refs" class="references csl-bib-body">
+  <div class="csl-entry" id="bib-thompson">
+    <div class="csl-left-margin">[1]</div><div class="csl-right-inline">K. Thompson, “Reflections on trusting trust,” <i>Communications of the ACM</i>, vol. 27, no. 8, pp. 761–763, Aug. 1984, doi: 10.1145/358198.358210.</div>
+  </div>
+  <div class="csl-entry" id="bib-dolstra">
+    <div class="csl-left-margin">[2]</div><div class="csl-right-inline">E. Dolstra, “The purely functional software deployment model,” Utrecht University, Netherlands, 2006. [Online]. Available: http://dspace.library.uu.nl/handle/1874/7540</div>
+  </div>
+  <div class="csl-entry" id="bib-hemel">
+    <div class="csl-left-margin">[3]</div><div class="csl-right-inline">A. Hemel, “NixOS: the Nix based operating system,” Zenodo, 2006. doi: 10.5281/zenodo.12906987.</div>
+  </div>
+  <div class="csl-entry" id="bib-nixpkgs">
+    <div class="csl-left-margin">[4]</div><div class="csl-right-inline">“Nixpkgs: Nix Packages collection &#x26; NixOS.” GitHub. Accessed: Jul. 21, 2025. [Online]. Available: https://github.com/NixOS/nixpkgs/tree/92c2e04a475523e723c67ef872d8037379073681</div>
+  </div>
+  <div class="csl-entry" id="bib-guix">
+    <div class="csl-left-margin">[5]</div><div class="csl-right-inline">“Guix: Transactional package manager, declarative GNU/Linux distribution, reproducible deployment tool, and more!” Codeberg. Accessed: Sep. 25, 2025. [Online]. Available: https://codeberg.org/guix/guix</div>
+  </div>
+  <div class="csl-entry" id="bib-guix-bootstrap">
+    <div class="csl-left-margin">[6]</div><div class="csl-right-inline">J. Nieuwenhuizen and L. Courtès, “The Full-Source Bootstrap: Building from source all the way down,” Apr. 26, 2023. Accessed: Sep. 25, 2025. [Online]. Available: https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/</div>
+  </div>
+  <div class="csl-entry" id="bib-aux-foundation">
+    <div class="csl-left-margin">[7]</div><div class="csl-right-inline">J. Hamilton and others, “Aux Foundation: A full binary bootstrap chain for Nix.” Mar. 30, 2025. Accessed: Sep. 25, 2025. [Online]. Available: https://git.auxolotl.org/auxolotl/foundation</div>
+  </div>
+  <div class="csl-entry" id="bib-live-bootstrap">
+    <div class="csl-left-margin">[8]</div><div class="csl-right-inline">S. Tyler and others, “live-bootstrap.” GitHub. Accessed: Sep. 25, 2025. [Online]. Available: https://github.com/fosslinux/live-bootstrap</div>
+  </div>
+  <div class="csl-entry" id="bib-rust-bootstrap">
+    <div class="csl-left-margin">[9]</div><div class="csl-right-inline">D. Tolnay, “Bootstrapping rustc from source.” Accessed: Dec. 13, 2025. [Online]. Available: https://github.com/dtolnay/bootstrap</div>
+  </div>
+  <div class="csl-entry" id="bib-java-bootstrap">
+    <div class="csl-left-margin">[10]</div><div class="csl-right-inline">Bootstrappable Builds, “From C++ to Java.” Accessed: Dec. 13, 2025. [Online]. Available: https://www.bootstrappable.org/projects/java.html</div>
+  </div>
+  <div class="csl-entry" id="bib-xz-utils-cve">
+    <div class="csl-left-margin">[11]</div><div class="csl-right-inline">“CVE-2024-3094.” Mar. 29, 2024. Accessed: Oct. 20, 2025. [Online]. Available: https://www.cve.org/CVERecord?id=CVE-2024-3094</div>
+  </div>
+  <div class="csl-entry" id="bib-reproducible-builds">
+    <div class="csl-left-margin">[12]</div><div class="csl-right-inline">C. Lamb and S. Zacchiroli, “Reproducible Builds: Increasing the Integrity of Software Supply Chains,” <i>IEEE Software</i>, vol. 39, no. 2, pp. 62–70, Mar. 2022, doi: 10.1109/MS.2021.3073045.</div>
+  </div>
+  <div class="csl-entry" id="bib-ca-nix-rfc">
+    <div class="csl-left-margin">[13]</div><div class="csl-right-inline">T. Hufschmitt, “RFC 0062: Content-addressed paths.” Accessed: Oct. 21, 2025. [Online]. Available: https://github.com/tweag/rfcs/blob/cas-rfc/rfcs/0062-content-addressed-paths.md</div>
+  </div>
+  <div class="csl-entry" id="bib-ca-nix-tweag">
+    <div class="csl-left-margin">[14]</div><div class="csl-right-inline">T. Hufschmitt, “Implementing a content-addressed Nix.” Accessed: Oct. 21, 2025. [Online]. Available: https://www.tweag.io/blog/2021-12-02-nix-cas-4/</div>
+  </div>
+</div> <aside class="notes" style="color: navy;"><div id="refs" class="references csl-bib-body">
+  <div class="csl-entry" id="bib-thompson">
+    <div class="csl-left-margin">[1]</div><div class="csl-right-inline">K. Thompson, “Reflections on trusting trust,” <i>Communications of the ACM</i>, vol. 27, no. 8, pp. 761–763, Aug. 1984, doi: 10.1145/358198.358210.</div>
+  </div>
+  <div class="csl-entry" id="bib-dolstra">
+    <div class="csl-left-margin">[2]</div><div class="csl-right-inline">E. Dolstra, “The purely functional software deployment model,” Utrecht University, Netherlands, 2006. [Online]. Available: http://dspace.library.uu.nl/handle/1874/7540</div>
+  </div>
+  <div class="csl-entry" id="bib-hemel">
+    <div class="csl-left-margin">[3]</div><div class="csl-right-inline">A. Hemel, “NixOS: the Nix based operating system,” Zenodo, 2006. doi: 10.5281/zenodo.12906987.</div>
+  </div>
+  <div class="csl-entry" id="bib-nixpkgs">
+    <div class="csl-left-margin">[4]</div><div class="csl-right-inline">“Nixpkgs: Nix Packages collection &#x26; NixOS.” GitHub. Accessed: Jul. 21, 2025. [Online]. Available: https://github.com/NixOS/nixpkgs/tree/92c2e04a475523e723c67ef872d8037379073681</div>
+  </div>
+  <div class="csl-entry" id="bib-guix">
+    <div class="csl-left-margin">[5]</div><div class="csl-right-inline">“Guix: Transactional package manager, declarative GNU/Linux distribution, reproducible deployment tool, and more!” Codeberg. Accessed: Sep. 25, 2025. [Online]. Available: https://codeberg.org/guix/guix</div>
+  </div>
+  <div class="csl-entry" id="bib-guix-bootstrap">
+    <div class="csl-left-margin">[6]</div><div class="csl-right-inline">J. Nieuwenhuizen and L. Courtès, “The Full-Source Bootstrap: Building from source all the way down,” Apr. 26, 2023. Accessed: Sep. 25, 2025. [Online]. Available: https://guix.gnu.org/en/blog/2023/the-full-source-bootstrap-building-from-source-all-the-way-down/</div>
+  </div>
+  <div class="csl-entry" id="bib-aux-foundation">
+    <div class="csl-left-margin">[7]</div><div class="csl-right-inline">J. Hamilton and others, “Aux Foundation: A full binary bootstrap chain for Nix.” Mar. 30, 2025. Accessed: Sep. 25, 2025. [Online]. Available: https://git.auxolotl.org/auxolotl/foundation</div>
+  </div>
+  <div class="csl-entry" id="bib-live-bootstrap">
+    <div class="csl-left-margin">[8]</div><div class="csl-right-inline">S. Tyler and others, “live-bootstrap.” GitHub. Accessed: Sep. 25, 2025. [Online]. Available: https://github.com/fosslinux/live-bootstrap</div>
+  </div>
+  <div class="csl-entry" id="bib-rust-bootstrap">
+    <div class="csl-left-margin">[9]</div><div class="csl-right-inline">D. Tolnay, “Bootstrapping rustc from source.” Accessed: Dec. 13, 2025. [Online]. Available: https://github.com/dtolnay/bootstrap</div>
+  </div>
+  <div class="csl-entry" id="bib-java-bootstrap">
+    <div class="csl-left-margin">[10]</div><div class="csl-right-inline">Bootstrappable Builds, “From C++ to Java.” Accessed: Dec. 13, 2025. [Online]. Available: https://www.bootstrappable.org/projects/java.html</div>
+  </div>
+  <div class="csl-entry" id="bib-xz-utils-cve">
+    <div class="csl-left-margin">[11]</div><div class="csl-right-inline">“CVE-2024-3094.” Mar. 29, 2024. Accessed: Oct. 20, 2025. [Online]. Available: https://www.cve.org/CVERecord?id=CVE-2024-3094</div>
+  </div>
+  <div class="csl-entry" id="bib-reproducible-builds">
+    <div class="csl-left-margin">[12]</div><div class="csl-right-inline">C. Lamb and S. Zacchiroli, “Reproducible Builds: Increasing the Integrity of Software Supply Chains,” <i>IEEE Software</i>, vol. 39, no. 2, pp. 62–70, Mar. 2022, doi: 10.1109/MS.2021.3073045.</div>
+  </div>
+  <div class="csl-entry" id="bib-ca-nix-rfc">
+    <div class="csl-left-margin">[13]</div><div class="csl-right-inline">T. Hufschmitt, “RFC 0062: Content-addressed paths.” Accessed: Oct. 21, 2025. [Online]. Available: https://github.com/tweag/rfcs/blob/cas-rfc/rfcs/0062-content-addressed-paths.md</div>
+  </div>
+  <div class="csl-entry" id="bib-ca-nix-tweag">
+    <div class="csl-left-margin">[14]</div><div class="csl-right-inline">T. Hufschmitt, “Implementing a content-addressed Nix.” Accessed: Oct. 21, 2025. [Online]. Available: https://www.tweag.io/blog/2021-12-02-nix-cas-4/</div>
+  </div>
+</div> </aside> </div>  </div> </section> </body></html>  </div> </div> <script type="module" src="/nixos-full-source-bootstrap/presentation/extended/_astro/Presentation.astro_astro_type_script_index_0_lang.BgkXdT5K.js"></script> </body> </html>

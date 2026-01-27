@@ -1,0 +1,26 @@
+{
+  "/nix/store/3ab...9m4-example.drv": {
+    "args": [ "-c", "echo hello world > $out" ],
+    "builder": "/nix/store/aqb...qsy-bash-interactive-5.2p37/bin/bash",
+    "env": {
+      "builder": "/nix/store/aqb...qsy-bash-interactive-5.2p37/bin/bash",
+      "name": "example",
+      "out": "/nix/store/n1x...s2k-example",
+      "system": "x86_64-linux"
+    },
+    "inputDrvs": {
+      "/nix/store/5hh...p56-bash-interactive-5.2p37.drv": {
+        "dynamicOutputs": {},
+        "outputs": [ "out" ]
+      }
+    },
+    "inputSrcs": [],
+    "name": "example",
+    "outputs": {
+      "out": {
+        "path": "/nix/store/n1x...s2k-example"
+      }
+    },
+    "system": "x86_64-linux"
+  }
+}

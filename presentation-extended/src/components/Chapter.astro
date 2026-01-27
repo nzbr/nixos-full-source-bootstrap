@@ -1,0 +1,13 @@
+---
+import Title from './Title.astro';
+export interface Props {
+  title: string;
+  id?: string;
+}
+const { title, id } = Astro.props;
+---
+
+<section id={id}>
+  {title ? <Title title={title} /> : ''}
+  <slot />
+</section>

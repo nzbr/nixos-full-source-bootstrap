@@ -1,0 +1,12 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - '@swc/core'
+  - ejs
+  - lmdb
+  - msgpackr-extract
+  - nodejieba
+
+onlyBuiltDependencies:
+  - '@nzbr/copperflame'
+  - esbuild
+  - sharp

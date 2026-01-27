@@ -1,0 +1,225 @@
+@use "sass:map";
+
+@use "@nzbr/copperflame-web/css/config" with (
+  $professional: true,
+  $darkmode: false,
+  $auto-darkmode: false,
+  $debug: false,
+  $image-format: "avif",
+  $root: "/node_modules/@nzbr/copperflame",
+
+  $font-ranges: (
+    latin,
+  ),
+  // $font-weights: (400, 600, 700),
+  $font-weights:
+    (
+      400,
+    ),
+  $font-ttf-fallback: false
+);
+@use "@nzbr/copperflame-web/css/colors" with (
+  $lightColors: (
+    foreground: #000000,
+    background: #ffffff,
+    foreground-secondary: #a8a8a8,
+    background-secondary: #f5f5f5,
+
+    alpha: 0.75,
+    highlight: #639a00,
+    shadow: rgba(#000000, 0.5),
+    error: #ff0000,
+  )
+);
+@use "@nzbr/copperflame-web/css/revealjs" as *;
+@use "@nzbr/copperflame-web/css/elements";
+@use "@nzbr/copperflame-web/css/fonts/code";
+
+@use "./font.scss" as *;
+
+.reveal .slides section {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: colors.$highlight;
+    font-family: "Akkurat Regular", Helvetica, Arial, sans-serif;
+
+    &.subtitle {
+      color: colors.$foreground;
+    }
+  }
+
+  .fragment.custom {
+    &.stepped {
+      opacity: 0;
+      color: colors.$foreground-secondary;
+      &::marker,
+      &:before {
+        color: colors.$foreground-secondary;
+      }
+
+      &.visible,
+      &.start-visible {
+        opacity: 1;
+      }
+      &.current-fragment:not(.start-visible),
+      &.start-visible:not(.visible) {
+        opacity: 1;
+        color: colors.$foreground;
+        &::marker,
+        &:before {
+          color: colors.$highlight;
+        }
+      }
+
+      &:not(.current-fragment) svg {
+        rect,
+        path,
+        circle {
+          stroke: colors.$foreground-secondary !important;
+        }
+        circle,
+        tspan,
+        marker path {
+          fill: colors.$foreground-secondary !important;
+        }
+      }
+    }
+
+    &.replace:not(.current-fragment) {
+      display: none;
+    }
+  }
+
+  &.show-implementation-diagram {
+    .section-content {
+      height: calc(67 * $sh);
+    }
+  }
+
+  &.rq-slide {
+    h1 {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5em;
+
+      .rq-text {
+        font-size: 0.35em;
+        color: colors.$foreground;
+      }
+    }
+  }
+
+  #refs {
+    font-size: 0.8em;
+
+    background: none;
+    box-shadow: none;
+
+    .csl-entry {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5em;
+
+      .csl-left-margin {
+        font-variant-numeric: tabular-nums;
+        width: 2em;
+        flex-shrink: 0;
+        text-align: right;
+      }
+    }
+  }
+}
+
+:root {
+  --r-main-font: "Akkurat Regular", Helvetica, Arial, sans-serif !important;
+}
+
+.figure-box {
+  figure {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+figure > svg {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+
+  .d2-svg {
+    > rect:first-of-type {
+      fill: none !important;
+    }
+  }
+}
+
+:root {
+  --cf-sh: $sh;
+  --cf-sw: $sw;
+}
+
+#implementation-diagram {
+  position: absolute;
+  bottom: calc(100vh - 100 * $sh + 1em);
+  z-index: 200;
+  width: calc(100 * $sw - 2em);
+  height: calc(20 * $sh);
+  left: calc((100vw - (100 * $sw - 2em)) / 2);
+  transition-duration: 300ms;
+  transition-property: opacity, bottom;
+
+  &.invisible {
+    opacity: 0;
+    bottom: calc(-20 * $sh);
+  }
+
+  g {
+    transition-duration: 200ms;
+    transition-property: opacity;
+
+    &.invisible {
+      opacity: 0;
+    }
+  }
+}
+
+ol.rq-list {
+  list-style: none;
+  counter-reset: li;
+
+  li {
+    display: flex;
+    gap: 0.5em;
+
+    &:before {
+      counter-increment: li;
+      content: "RQ" counter(li);
+      width: 2em;
+      flex-shrink: 0;
+      color: colors.$highlight;
+      font-weight: bold;
+    }
+  }
+}
+
+.hl {
+  @include elements.acrylic();
+  @include elements.floating();
+
+  .hl-header {
+    display: none;
+  }
+
+  pre {
+    box-shadow: none;
+    margin: 0;
+    margin-top: 1ex;
+    margin-bottom: 0.5ex;
+    width: 100%;
+  }
+}

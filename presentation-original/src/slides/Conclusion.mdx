@@ -1,0 +1,32 @@
+import Chapter from "../components/Chapter.astro";
+import Slide from "../components/Slide.astro";
+
+<Chapter title="Conclusion">
+
+  <Slide title="Usability">
+    - Initial Installation
+      - High computational cost
+      - Limited hardware support
+        <ul>
+          <li>Only `x86_64`</li>
+          <li>No UEFI</li>
+          <li class="notes">Workaround: Installer ISO</li>
+        </ul>
+    - Adding Packages
+      <ul>
+        <li>Similar to other source-based package managers</li>
+        <li class="notes">Unless build dependencies are deleted</li>
+      </ul>
+    - Updating
+      - Manual Nixpkgs update
+      - Rebuilds
+  </Slide>
+
+  <Slide title="Future Work">
+    - Integration into Nixpkgs (`minimal-bootstrap`)
+    - Optimization
+    - Replace remaining bootstrap binaries
+      - Implement existing bootstrap chains
+  </Slide>
+
+</Chapter>

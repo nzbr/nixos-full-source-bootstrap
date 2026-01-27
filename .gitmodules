@@ -1,0 +1,6 @@
+[submodule "nixpkgs"]
+	path = nixpkgs
+	url = https://github.com/nzbr/nixpkgs.git
+[submodule "live-bootstrap"]
+	path = live-bootstrap
+	url = https://github.com/nzbr/live-bootstrap.git

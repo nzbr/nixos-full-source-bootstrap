@@ -1,0 +1,38 @@
+---
+import Presentation from '../layouts/Presentation.astro';
+import CitationProcessor from '../components/CitationProcessor.astro';
+import ieee from '@citation/csl-style-ieee';
+
+import Title from '../components/Title.astro';
+import Slide from '../components/Slide.astro';
+
+import Introduction from '../slides/Introduction.mdx';
+import Background from '../slides/Background.mdx';
+import Implementation from '../slides/Implementation.mdx';
+import Results from '../slides/Results.mdx';
+import Conclusion from '../slides/Conclusion.mdx';
+---
+
+<Presentation>
+  <CitationProcessor
+    opts={{
+      bibliography: 'src/assets/thesis.bib',
+      inlineClass: ['citation'],
+      linkCitations: true,
+      showTooltips: true,
+    }}
+    customStyle={ieee.default.content}
+  >
+    <Title title="A Full-Source Bootstrap for NixOS" subtitle="Wire Jansen" />
+
+    <Introduction />
+    <Background />
+    <Implementation />
+    <Results />
+    <Conclusion />
+
+    <Slide title="References">
+      <div>[^ref]</div>
+    </Slide>
+  </CitationProcessor>
+</Presentation>
